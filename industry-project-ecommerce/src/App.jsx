@@ -3,14 +3,12 @@ import {Route, Switch} from 'wouter';
 import Home from './Home';
 import ProductInfo from './ProductInfo';
 import Products from './Products';
-import Header from './header';
-
+// import Navbar from './navbar';
 
 export default function App (){
 
   return(
     <>
-    <Header />
     <Switch>
     <Route path="/" component={Home}/>
     <Route path="/productInfo" component={ProductInfo}/>
