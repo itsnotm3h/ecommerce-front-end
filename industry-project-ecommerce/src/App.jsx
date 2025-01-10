@@ -3,7 +3,7 @@ import {Route, Switch} from 'wouter';
 import Home from './Home';
 import ProductInfo from './ProductInfo';
 import Products from './Products';
-// import Navbar from './navbar';
+import Navbar from './navbar';
 
 export default function App (){
 
