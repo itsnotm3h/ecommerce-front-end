@@ -66,3 +66,97 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+body{
+  font-size: 19px;
+}
+
+.thisTitle{
+  font-size: 2rem;
+}
+
+.bebas-Neue {
+  font-family: "Bebas Neue", sans-serif;
+}
+
+.sectionTitle{
+  font-weight: 800;
+  font-size: 3rem;
+}
+.productPhoto{
+   min-height: 400px;
+}
+.productInfo{
+  width: 100%;
+}
+.productName{
+  width: 70%;
+}
+
+.productCounter{
+  width: 30%;
+  border: 1px solid black;
+}
+
+.productPrice{
+  width:100%;
+}
+
+.mainVisual{
+  height: 80vh;
+}
+
+.mainProduct{
+  overflow: hidden;
+}
+
+.flash-alert {
+  animation: fadeOut 2s ease forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; } /* Stay fully visible for the first 70% of time */
+  100% { opacity: 0; }
+}
+
+.categoryBtn{
+  cursor: pointer;
+}
+.categoryBtn:hover{
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+
+.cartImage{
+  width: 30%;
+  height: 150px;
+}
+.cartInfo{
+  width: 55%;
+}
+.cartPrice{
+  width: 15%;
+}
+
+.mainIMG{
+  background-image: url('./images/main.png');
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.sub1{
+  background-image: url('./images/sub1.png');
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+
+}
+
+.sub2{
+  background-image: url('./images/sub2.png');
+  background-position: center;
+  background-size: cover;
+}
