@@ -9,6 +9,7 @@ export default function App (){
 
   return(
     <>
+    <Navbar/>
     <Switch>
     <Route path="/" component={Home}/>
     <Route path="/productInfo" component={ProductInfo}/>
