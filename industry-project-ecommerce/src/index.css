@@ -69,14 +69,30 @@ button:focus-visible {
 
 body{
   font-size: 19px;
+  background-color:#F7F4ED;
+  font-family: "Quicksand", serif;
 }
 
 .thisTitle{
   font-size: 2rem;
 }
 
-.bebas-Neue {
-  font-family: "Bebas Neue", sans-serif;
+.text-white{
+  color:white!important;
+}
+
+.body-text {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+  /* font-weight: <weight>; */
+  font-style: normal;
+}
+
+.header-text{
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  /* font-weight: <weight>; */
+  font-style: normal;
 }
 
 .sectionTitle{
@@ -103,8 +119,23 @@ body{
 }
 
 .mainVisual{
-  height: 80vh;
+  height: 100vh;
+  background-image: url("./main.jpg");
+  background-size:cover;
+  background-position:right;
 }
+
+.main-text-size
+{
+font-size: 8rem;
+font-weight: 500;
+}
+.sub-text-size
+{
+font-size: 1rem;
+font-weight: 500;
+}
+
 
 .mainProduct{
   overflow: hidden;
@@ -127,7 +158,6 @@ body{
   font-weight: 500;
   font-size: 1.5rem;
 }
-
 
 .cartImage{
   width: 30%;

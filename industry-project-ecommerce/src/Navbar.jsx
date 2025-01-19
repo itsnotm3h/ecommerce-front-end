@@ -2,11 +2,11 @@ import React from "react";
 import {Route, Switch,Link} from 'wouter';
 
 
-export default function Navbar() {
+export default function Navbar(props) {
     return (
         <>
-            <div className="container-fluid postion-relative p-0">
-            <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div className={`container-fluid postion-relative p-0 position-absolute`} >
+            <nav className="navbar navbar-expand-lg">
                 <div className="container ">
                     <Link className="navbar-brand" href="#">LogoHere</Link >
                     <button
@@ -17,9 +17,9 @@ export default function Navbar() {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className={`collapse navbar-collapse `} id="navbarNav">
-                        <ul className="navbar-nav ms-auto">
+                        <ul className={"navbar-nav ms-auto body-text" + props.type}>
                             <li className="nav-item">
-                                <Link className={`nav-link `} aria-current="page" href="/">Home</Link >
+                                <Link className={`nav-link`} aria-current="page" href="/">Home</Link >
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" href="/products">Products</Link >
