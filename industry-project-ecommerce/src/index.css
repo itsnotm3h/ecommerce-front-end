@@ -67,18 +67,63 @@ button:focus-visible {
   }
 } */
 
+
+.test-bg{
+  background-image: url("./images/EA_ashen.png");
+  background-size: cover;
+  background-position:center;
+}
+.test-gradient{
+  background: linear-gradient(180deg, rgba(37,79,157,0) 20%, rgba(37,79,157,1) 80%, rgba(0,0,0,1) 100%);
+}
+
+.productInfo{
+background: linear-gradient(180deg, rgba(37,79,157,0) 55%, rgba(37,79,157,1) 70%, rgba(0,0,0,1) 85%);
+color:white;
+}
+
+.productInfo-container{
+  width: 100%;
+  height: 35%;
+}
+
+.productInfo-type{
+  font-size: 0.9rem;
+}
+
+.disable-price{
+  text-decoration:line-through;
+  opacity: 0.5;
+}
+
+.productInfo-name{
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.productInfo-price{
+  font-size: 1rem;
+}
+
 body{
   font-size: 19px;
   background-color:#F7F4ED!important;
   font-family: "Quicksand", serif;
 }
 
+.hide{
+  display: none!important;
+}
 .thisTitle{
   font-size: 2rem;
 }
 
 .text-white{
-  color:white!important;
+  color:white;
+}
+
+.text-black{
+  color:#222222;
 }
 
 .body-text {
@@ -101,6 +146,7 @@ body{
 }
 .productPhoto{
    min-height: 400px;
+   position: relative;
 }
 .productInfo{
   width: 100%;
@@ -123,6 +169,7 @@ body{
   background-image: url("./main.png");
   background-size:cover;
   background-position:top;
+  /* background-attachment: scroll; */
 }
 
 .main-text-size
@@ -174,24 +221,47 @@ font-size: 1.5rem;
   background-position: center;
 }
 
+.jfy-hover{
+background: linear-gradient(180deg, rgba(37,79,157,0) 20%, rgba(37,79,157,1) 80%, rgba(0,0,0,1) 100%);
+
+}
+
 .short
 {
-  height: 40%;
+  height: calc(100vh/3);
 }
 
 .long
 {
-  height: 80%;
+  height: calc(100vh/1.4);
 }
 
 .flash-alert {
   animation: fadeOut 2s ease forwards;
 }
 
-.nav-link{
-  color:white!important;
+.search-box{
+  border: 1px solid black;
+  font-size: 16px;
 }
 
+.accordion-button{
+  background-color: #F7F4ED!important;
+}
+.footer{
+background-color: aquamarine;
+}
+.accordion-item{
+  border: 0.5px solid #d9d9d9;
+  border-left: 0;
+  border-right: 0; 
+  border-top: 0;
+  border-radius: 0!important;
+}
+
+.accordion-button{
+  color:#222222!important;
+}
 
 @keyframes fadeOut {
   0% { opacity: 1; }

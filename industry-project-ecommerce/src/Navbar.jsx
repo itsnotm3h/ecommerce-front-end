@@ -19,13 +19,13 @@ export default function Navbar(props) {
                     <div className={`collapse navbar-collapse `} id="navbarNav">
                         <ul className={"navbar-nav ms-auto body-text" + props.type}>
                             <li className="nav-item">
-                                <Link className={`nav-link`} aria-current="page" href="/">Home</Link >
+                                <Link className={`nav-link `+ props.type} aria-current="page" href="/">Home</Link >
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" href="/products">Products</Link >
+                                <Link className={`nav-link `+ props.type} href="/products">Products</Link >
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" href="/cart">Cart</Link >
+                                <Link className={`nav-link `+ props.type} href="/cart">Cart</Link >
                             </li>
 
                             {/* {isthereJWT(checkJWT) ? (
