@@ -69,7 +69,7 @@ button:focus-visible {
 
 body{
   font-size: 19px;
-  background-color:#F7F4ED;
+  background-color:#F7F4ED!important;
   font-family: "Quicksand", serif;
 }
 
@@ -96,7 +96,7 @@ body{
 }
 
 .sectionTitle{
-  font-weight: 800;
+  font-weight: 500;
   font-size: 3rem;
 }
 .productPhoto{
@@ -120,30 +120,78 @@ body{
 
 .mainVisual{
   height: 100vh;
-  background-image: url("./main.jpg");
+  background-image: url("./main.png");
   background-size:cover;
-  background-position:right;
+  background-position:top;
 }
 
 .main-text-size
 {
-font-size: 8rem;
-font-weight: 500;
-}
-.sub-text-size
-{
-font-size: 1rem;
-font-weight: 500;
+font-size: 5rem;
+/* font-weight: 500; */
+line-height:1.1;
 }
 
+.sub-text-size
+{
+font-size: 1.5rem;
+}
 
 .mainProduct{
   overflow: hidden;
 }
 
+.main-jfy-container{
+  position: relative;
+  height: 100%;
+}
+
+.main-jfy-item{
+  height: 100%;
+  background-color: #e4e2d9;
+  color:white;
+}
+
+.jfy-hover.productName{
+  font-size: 150%;
+}
+
+.jfy-1{
+  background-image: url("./images/EA_ashen.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.jfy-2{
+  background-image: url("./images/EA_ashen.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.jfy-3{
+  background-image: url("./images/EA_ashen.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.short
+{
+  height: 40%;
+}
+
+.long
+{
+  height: 80%;
+}
+
 .flash-alert {
   animation: fadeOut 2s ease forwards;
 }
+
+.nav-link{
+  color:white!important;
+}
+
 
 @keyframes fadeOut {
   0% { opacity: 1; }
