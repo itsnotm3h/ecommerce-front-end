@@ -151,6 +151,21 @@ body{
 .productInfo{
   width: 100%;
 }
+.productInfo-top{
+  min-height: 650px;
+}
+.productInfo-name{
+  font-weight: 600;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.productInfo-photo{
+background-image: url("../images/RBC_meadow.png");
+height: 100%;
+background-position:center;
+}
+
 .productName{
   width: 70%;
 }
