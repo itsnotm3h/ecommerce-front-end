@@ -156,8 +156,27 @@ body{
 }
 .productInfo-name{
   font-weight: 600;
-  font-size: 3rem;
   line-height: 1;
+}
+.productInfo-dimension{
+  color:#5F6368;
+}
+
+.productInfo-button{
+border:1px solid #d9d9d9!important;
+}
+
+.productInfo-Minus,.productInfo-Add {
+  background-color: #d9d9d9!important;;
+}
+
+
+.font-3rem{
+  font-size: 3rem!important;
+}
+
+.font-700{
+  font-weight: 700;
 }
 
 .productInfo-photo{
