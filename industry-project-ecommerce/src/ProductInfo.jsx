@@ -7,7 +7,7 @@ export default function ProductInfo() {
             <Navbar type="text-black" />
             <div className="container-fluid p-5 vh-100">
                 <div className="container h-100 pt-5">
-                    <div className="row productInfo-top justify-content-center">
+                    <div className="row d-flex productInfo-top justify-content-center">
                         <div className="col-12 col-lg-5 position-relative">
                             <div className="productInfo-photo">
                             </div>
@@ -17,7 +17,7 @@ export default function ProductInfo() {
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut lectus rutrum, tincidunt mauris ac, mollis ligula. Nulla facilisi. Etiam auctor eleifend fringilla.                        </div>
                             </div>
                         </div>
-                        <div className="col-lg-7 d-flex">
+                        <div className="col-lg-6 d-flex">
                             <div className="sticky-top my-auto px-lg-5">
                                 <div>
                                     <div className="productInfo-category">Catergory</div>
