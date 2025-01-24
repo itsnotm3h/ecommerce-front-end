@@ -21,8 +21,8 @@ export default function Cart() {
 
                                 </div>
                             </div>
-                            <div className="col-lg-4 border">
-                                col for subtotal
+                            <div className="col-lg-4 border py-2 px-3">
+                            <div className="header-text cart-title">Summary</div>
                             </div>
 
                         </div>
