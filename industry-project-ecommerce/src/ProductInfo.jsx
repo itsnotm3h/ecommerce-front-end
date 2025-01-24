@@ -33,7 +33,7 @@ export default function ProductInfo() {
                                             <div className="col-5 d-flex productInfo-button justify-content-between">
                                                 <div className="productInfo-Minus px-2">-</div>
                                                 <div className="productInfo-Quantity">1</div>
-                                                <div className="productInfo-Add px-2">+</div>
+                                                <div className="productInfo-Add px-2">+</div> 
                                             </div>
                                             <div className="prodyctInfo-availablity">In stock</div>
 
