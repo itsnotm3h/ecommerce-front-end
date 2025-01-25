@@ -105,13 +105,8 @@ color:white;
   font-size: 1rem;
 }
 
-.cart-title{
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
 body{
-  font-size: 19px;
+  font-size: 18px;
   background-color:#F7F4ED!important;
   font-family: "Quicksand", serif;
 }
@@ -365,13 +360,45 @@ background-color: aquamarine;
   background-position: center;
 }
 
-.cart-product-name {
+
+.header-style{
   font-size:1.5rem;
   font-weight: 600;
 }
+
+
+.sub-header-style{
+  font-size:1.1rem;
+  font-weight: 600;
+}
+
 
 .cart-item-delete
 {
   right:0;
   top:0;
 }
+
+.cart-promo-input{
+  width: 100%;
+}
+
+.black-btn{
+  background-color: #000!important;
+  color:white;
+  font-size: 1rem;
+  border: 0;
+}
+
+.w-45{
+  width: 45%;
+}
+.w-10{
+  width: 10%;
+}
+
+.cart-promo-section{
+  height: 15vh;
+}
+
+
