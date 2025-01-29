@@ -7,12 +7,13 @@ import Cart from './Cart';
 import Footer from './Footer';
 
 export default function App() {
+  
 
   return (
     <>
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/product-info" component={ProductInfo} />
+        <Route path="/products/:id" component={ProductInfo} />
         <Route path="/products" component={Products} />
         <Route path="/cart" component={Cart}/>
         {/* <Route path="/register" component={Registration}/> */}

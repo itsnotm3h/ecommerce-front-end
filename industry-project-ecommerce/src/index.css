@@ -68,11 +68,7 @@ button:focus-visible {
 } */
 
 
-.test-bg{
-  background-image: url("./images/EA_ashen.png");
-  background-size: cover;
-  background-position:center;
-}
+
 .test-gradient{
   background: linear-gradient(180deg, rgba(37,79,157,0) 20%, rgba(37,79,157,1) 80%, rgba(0,0,0,1) 100%);
 }
@@ -147,6 +143,8 @@ body{
 .productPhoto{
    min-height: 400px;
    position: relative;
+   background-size: cover;
+   background-position:center;
 }
 .productInfo{
   width: 100%;
@@ -187,9 +185,10 @@ border:1px solid #d9d9d9!important;
 .font-700{
   font-weight: 700;
 }
-
+.productInfo-category{
+  text-transform: capitalize;
+}
 .productInfo-photo{
-background-image: url("../images/RBC_meadow.png");
 height: 100%;
 background-position:center;
 }
@@ -401,4 +400,9 @@ background-color: aquamarine;
   height: 15vh;
 }
 
+.productInfo-like{
+right:5px!important;
+bottom:5px!important;
+cursor:pointer;
+}
 
