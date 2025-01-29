@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import { useRoute  } from 'wouter';
+import { useRoute } from 'wouter';
 import axios from 'axios';
 
 
@@ -9,55 +9,45 @@ import axios from 'axios';
 export default function ProductInfo() {
 
     const [info, setInfo] = useState("");
-    const [dimen, setDimension] = useState({});
+    const [dimension, setDimension] = useState({});
 
-    const [match, params] = useRoute('/products/:id'); 
+    const [match, params] = useRoute('/products/:id');
     const id = `${params.id}`;
 
-    const display = ()=>{
+    const displayDimension = () => {
 
-        let fullString ="";
+        let fullString = "";
 
         // "pd_width":"12.0","pd_depth":"12.0","pd_diameter":null,"pd_circumference":null
 
 
-        if(dimen.pd_height !=null)
-        {
-            fullString = fullString +`${dimen.pd_height}cm(H)`
+        if (dimension.pd_height != null) {
+            fullString = fullString + `${dimension.pd_height}cm(H)`
         }
-        if(dimen.pd_width !=null)
-        {
-                fullString = fullString +` x ${dimen.pd_width}cm(W)`
+        if (dimension.pd_width != null) {
+            fullString = fullString + ` x ${dimension.pd_width}cm(W)`
         }
-        if(dimen.pd_depth !=null)
-        {
-            fullString = fullString +` x ${dimen.pd_depth}cm(D)`
+        if (dimension.pd_depth != null) {
+            fullString = fullString + ` x ${dimension.pd_depth}cm(D)`
         }
-        if(dimen.pd_diameter!=null || dimen.pd_circumference!=null)
-        {
+        if (dimension.pd_diameter != null || dimension.pd_circumference != null) {
 
-            if(dimen.pd_diameter!=null)
-            {
-                 fullString = fullString +`, ${dimen.pd_diameter}cm(Diameter)`
-
+            if (dimension.pd_diameter != null) {
+                fullString = fullString + `, ${dimension.pd_diameter}cm(Diameter)`
             }
-            if(dimen.pd_circumference!=null)
-                {
-                     fullString = fullString +`, ${dimen.pd_circumference}cm(Diameter)`
-    
-                }
-
-
+            if (dimension.pd_circumference != null) {
+                fullString = fullString + `, ${dimension.pd_circumference}cm(Diameter)`
+            }
         }
 
-        return(fullString)
-       
+        return (fullString)
+
     }
 
-    
+
     useEffect(() => {
 
-        
+
         if (id) {
             const fetchInfo = async () => {
                 try {
@@ -72,7 +62,7 @@ export default function ProductInfo() {
 
             fetchInfo();
 
-            
+
         }
     }, [id]);
 
@@ -84,12 +74,12 @@ export default function ProductInfo() {
                 <div className="container h-100 pt-5">
                     <div className="row d-flex productInfo-top justify-content-center">
                         <div className="col-12 col-lg-5 position-relative">
-                            <div className="productInfo-photo" style={{backgroundImage: `url(${info.product_image}`}}>
+                            <div className="productInfo-photo" style={{ backgroundImage: `url(${info.product_image}` }}>
                             </div>
                             <div className="productInfo-description pt-5">
                                 <div className="font-700">Product Details</div>
                                 <div className="productInfo-writeup">
-                                {info.product_description}                      </div>
+                                    {info.product_description}                      </div>
                             </div>
                         </div>
                         <div className="col-lg-6 d-flex">
@@ -104,7 +94,7 @@ export default function ProductInfo() {
                                 <div className="pt-5">
                                     <div className="font-700">Dimensions</div>
                                     <div className="productInfo-dimension">
-                                        {display()}
+                                        {displayDimension()}
                                         <div className="productInfo-addToCart pt-5 position-relative">
                                             <div className="col-5 d-flex productInfo-button justify-content-between">
                                                 <div className="productInfo-Minus px-2">-</div>
