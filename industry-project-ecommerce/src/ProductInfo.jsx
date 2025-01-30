@@ -9,6 +9,7 @@ import axios from 'axios';
 export default function ProductInfo() {
 
     const [info, setInfo] = useState("");
+    const [stock, setStock] = useState(0);
     const [dimension, setDimension] = useState({});
 
     const [match, params] = useRoute('/products/:id');
@@ -17,9 +18,6 @@ export default function ProductInfo() {
     const displayDimension = () => {
 
         let fullString = "";
-
-        // "pd_width":"12.0","pd_depth":"12.0","pd_diameter":null,"pd_circumference":null
-
 
         if (dimension.pd_height != null) {
             fullString = fullString + `${dimension.pd_height}cm(H)`
@@ -36,23 +34,48 @@ export default function ProductInfo() {
                 fullString = fullString + `, ${dimension.pd_diameter}cm(Diameter)`
             }
             if (dimension.pd_circumference != null) {
-                fullString = fullString + `, ${dimension.pd_circumference}cm(Diameter)`
+                fullString = fullString + `, ${dimension.pd_circumference}cm(Cirumference)`
             }
         }
 
         return (fullString)
-
     }
 
 
-    useEffect(() => {
+    const [count, setCounter] = useState(0);
 
+
+    //This is the addCart function
+    // on click update the session immediately. 
+
+    const minusCart = () => {
+        if (count > 0) {
+            setCounter(count - 1);
+        }
+        else {
+            setCounter(0);
+        }
+    };
+
+    const addCart = () => {
+
+        if (count != stock) {
+            setCounter(count + 1)
+        }
+
+    };
+
+
+
+
+    useEffect(() => {
 
         if (id) {
             const fetchInfo = async () => {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${params.id}`);
                     setInfo(response.data);
+                    setStock(response.data.product_stock);
                     setDimension(response.data.dimension[0]); // Assuming there's only one dimension object
                 }
                 catch (error) {
@@ -61,7 +84,6 @@ export default function ProductInfo() {
             };
 
             fetchInfo();
-
 
         }
     }, [id]);
@@ -86,9 +108,11 @@ export default function ProductInfo() {
                             <div className="sticky-top my-auto ps-lg-5">
                                 <div>
                                     <div className="productInfo-category">{info.product_series}, {info.category_name}</div>
-                                    <div className="productInfo-name header-text w-100 sectionTitle font-3rem">{info.product_name}<span class="material-symbols-outlined">
+                                    <div className="w-100 d-flex flex-wrap">
+                                    <div className="productInfo-name header-text sectionTitle font-3rem ">{info.product_name}<span className="material-symbols-outlined text-center display-block p-1 like-icon ">
                                         heart_plus
                                     </span></div>
+                                    </div>
                                     <div className="productInfo-price header-text w-100 sectionTitle">${info.product_price}</div>
                                 </div>
                                 <div className="pt-5">
@@ -97,11 +121,36 @@ export default function ProductInfo() {
                                         {displayDimension()}
                                         <div className="productInfo-addToCart pt-5 position-relative">
                                             <div className="col-5 d-flex productInfo-button justify-content-between">
-                                                <div className="productInfo-Minus px-2">-</div>
-                                                <div className="productInfo-Quantity">1</div>
-                                                <div className="productInfo-Add px-2">+</div>
+                                                {count == 0 ? (
+                                                    <>
+                                                    {stock == 0 ? (
+                                                        <>
+                                                        <div className="button text-center w-100 addToCart h-100 disabled">Out Of Stock</div>
+
+                                                        </>
+                                                    ):(
+                                                        <>
+                                                        <div className="button text-center w-100 addToCart h-100" onClick={() => { addCart() }}>Add to Cart</div>
+                                                        </>
+                                                    )}
+                                                    
+                                                    </>
+
+                                                ) : (
+                                                    <>
+                                                        <div className="productInfo-Minus px-2" onClick={() => { minusCart() }}>-</div>
+                                                        <div className="productInfo-Quantity">{count}</div>
+                                                        <div className={`productInfo-Add px-2 ${count == stock ? "disabled" : ""}`} onClick={() => { addCart() }}>+</div>
+                                                    </>
+                                                )}
+
                                             </div>
-                                            <div className="prodyctInfo-availablity">In stock</div>
+                                            {/* <div className="productInfo-availablity ">
+                                            {count >= stock ? {
+
+                                            }
+                                            }
+                                            </div> */}
 
                                         </div>
                                     </div>

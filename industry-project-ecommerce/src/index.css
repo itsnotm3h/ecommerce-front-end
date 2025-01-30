@@ -170,11 +170,14 @@ font-size: 2rem;
 }
 
 .productInfo-button{
-border:1px solid #d9d9d9!important;
+border:1px solid #000!important;
 }
 
 .productInfo-Minus,.productInfo-Add {
-  background-color: #d9d9d9!important;;
+  background-color: #000!important;
+  cursor: pointer;
+  color:white;
+
 }
 
 
@@ -329,6 +332,16 @@ background-color: aquamarine;
 .cartPrice{
   width: 15%;
 }
+.addToCart
+{
+  background-color: #000;
+  color: white;
+}
+
+.like-icon{
+  cursor: pointer;
+  height: 100% ;
+}
 
 .mainIMG{
   background-image: url('./images/main.png');
@@ -406,3 +419,7 @@ bottom:5px!important;
 cursor:pointer;
 }
 
+.disabled{
+  opacity: 0.2;
+  cursor: default;
+}

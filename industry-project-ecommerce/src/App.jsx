@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'wouter';
 import Home from './Home';
 import ProductInfo from './ProductInfo';
 import Products from './Products';
 import Cart from './Cart';
 import Footer from './Footer';
+import axios from 'axios';
+
 
 export default function App() {
+
+  useEffect(()=>{
+    const initSession = async ()=>{
+      try{
+        const response =  await axios.post(`${import.meta.env.VITE_API_URL}/session/init`,{},{withCredentials:true});
+        console.log(response.data);
+
+      }
+      catch (error)
+      {
+        console.error('Error initializing session:', error);
+      }
+    };
+
+    initSession();
+  },[]);
   
 
   return (
