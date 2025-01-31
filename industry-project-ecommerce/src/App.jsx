@@ -10,17 +10,12 @@ import axios from 'axios';
 
 export default function App() {
 
+
   useEffect(()=>{
     const initSession = async ()=>{
-      try{
-        const response =  await axios.post(`${import.meta.env.VITE_API_URL}/session/init`,{},{withCredentials:true});
-        console.log(response.data);
-
-      }
-      catch (error)
-      {
-        console.error('Error initializing session:', error);
-      }
+      const response =  await axios.post(`${import.meta.env.VITE_API_URL}/session/init`,{},{withCredentials:true})
+      .then(response => console.log(response.data))
+      .catch(error => console.error(error));
     };
 
     initSession();
