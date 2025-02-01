@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { useRoute } from 'wouter';
 import axios from 'axios';
-
+import { useCart } from "./CartAtom";
 
 
 
@@ -14,6 +14,8 @@ export default function ProductInfo() {
 
     const [match, params] = useRoute('/products/:id');
     const id = `${params.id}`;
+
+    const {cartInfo, addToCart, getCartQty } = useCart();
 
     const displayDimension = () => {
 
@@ -44,26 +46,45 @@ export default function ProductInfo() {
 
     const [count, setCounter] = useState(0);
 
-
     //This is the addCart function
     // on click update the session immediately. 
 
     const minusCart = () => {
+        
         if (count > 0) {
-            setCounter(count - 1);
-        }
-        else {
-            setCounter(0);
+            const newCount = count - 1;
+            setCounter(newCount);
+            handleCart(info, newCount); 
         }
     };
 
     const addCart = () => {
 
-        if (count != stock) {
-            setCounter(count + 1)
+        if (count < stock) {
+            const newCount = count + 1;
+            setCounter(newCount);
+            handleCart(info, newCount); 
         }
+        
 
     };
+
+    const handleCart = (product, currentQty) => {
+
+        if (!product || !product.product_id) return; // Avoid adding undefined products
+        const existingProduct = cartInfo.find(i => i.product_id === product.product_id);
+    
+        addToCart({
+            "product_id": product.product_id,
+            "product_name": product.product_name,
+            "product_quantity": currentQty,
+            "price": product.product_price,
+            "product_image": product.product_image,
+            "product_dimension": displayDimension(),
+            "product_category": product.category_name,
+            "product_series": product.product_series
+        })
+    }
 
 
 
@@ -77,6 +98,8 @@ export default function ProductInfo() {
                     setInfo(response.data);
                     setStock(response.data.product_stock);
                     setDimension(response.data.dimension[0]); // Assuming there's only one dimension object
+                    setCounter(getCartQty(response.data.product_id));
+
                 }
                 catch (error) {
                     console.error("Error Fetching in frontend: ", error);
@@ -87,6 +110,13 @@ export default function ProductInfo() {
 
         }
     }, [id]);
+
+    useEffect(() => {
+        if (info && info.product_id) {
+            // handleCart(info, count);
+            console.log(cartInfo);
+        }
+    }, [count, info]);
 
 
     return (
@@ -109,9 +139,9 @@ export default function ProductInfo() {
                                 <div>
                                     <div className="productInfo-category">{info.product_series}, {info.category_name}</div>
                                     <div className="w-100 d-flex flex-wrap">
-                                    <div className="productInfo-name header-text sectionTitle font-3rem ">{info.product_name}<span className="material-symbols-outlined text-center display-block p-1 like-icon ">
-                                        heart_plus
-                                    </span></div>
+                                        <div className="productInfo-name header-text sectionTitle font-3rem ">{info.product_name}<span className="material-symbols-outlined text-center display-block p-1 like-icon ">
+                                            heart_plus
+                                        </span></div>
                                     </div>
                                     <div className="productInfo-price header-text w-100 sectionTitle">${info.product_price}</div>
                                 </div>
@@ -123,17 +153,17 @@ export default function ProductInfo() {
                                             <div className="col-5 d-flex productInfo-button justify-content-between">
                                                 {count == 0 ? (
                                                     <>
-                                                    {stock == 0 ? (
-                                                        <>
-                                                        <div className="button text-center w-100 addToCart h-100 disabled">Out Of Stock</div>
+                                                        {stock == 0 ? (
+                                                            <>
+                                                                <div className="button text-center w-100 addToCart h-100 disabled">Out Of Stock</div>
 
-                                                        </>
-                                                    ):(
-                                                        <>
-                                                        <div className="button text-center w-100 addToCart h-100" onClick={() => { addCart() }}>Add to Cart</div>
-                                                        </>
-                                                    )}
-                                                    
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <div className="button text-center w-100 addToCart h-100" onClick={() => { addCart() }}>Add to Cart</div>
+                                                            </>
+                                                        )}
+
                                                     </>
 
                                                 ) : (
