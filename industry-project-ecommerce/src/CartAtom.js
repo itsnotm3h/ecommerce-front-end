@@ -4,14 +4,15 @@ import Immutable from "seamless-immutable";
 const itemInfo = Immutable(
     [
         {
-            price:"65.00",
+            price:65.00,
             product_category:"vase",
             product_dimension:"15.0cm(H) x 12.0cm(W) x 12.0cm(D)",
             product_id:1,
             product_image:"/images/RBC_wildflower.png",
             product_name:"Wildflower Basin",
             product_quantity:2,
-            product_series:"Rustic Bloom"
+            product_series:"Rustic Bloom",
+            product_stock:10,
         }
 
     ]
@@ -24,7 +25,7 @@ export const useCart = () => {
     const [cartInfo, setCart] = useAtom(cartAtom);
 
     const getCartTotal = () => {
-        return cartAtom.reduce((total, item) => total + (item.price * item.qty), 0).toFixed(2);
+        return cartInfo.reduce((total, item) => total + (item.price * item.product_quantity), 0).toFixed(2);
     };
 
 
@@ -46,9 +47,29 @@ export const useCart = () => {
                 })
             }
         }
+        )
+    }
+
+    const updateCart = (productId,qty) =>{
+        setCart(currentCart =>{
+            const currentIndex = cartInfo.findIndex(x => x.product_id === productId);
+
+            if(currentCart !==1)
+            {
+                if(qty == 0)
+                {
+                    return currentCart.filter(item=>item.product_id !== productId);
+                }
+                else{
+
+                    return currentCart.setIn([currentIndex, "product_quantity"], qty);
+                }
+            }
+
+        }
+
 
         )
-
     }
 
     const getCartQty = (product) => {
@@ -57,11 +78,14 @@ export const useCart = () => {
         return currentIndex !== -1 ? cartInfo[currentIndex].product_quantity : 0;
         }
 
+    
+
     return {
         cartInfo,
         getCartTotal,
         addToCart,
         getCartQty,
+        updateCart,
     }
 
 }

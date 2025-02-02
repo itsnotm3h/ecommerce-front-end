@@ -1,11 +1,79 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import CartItem from "./CartItem";
 import {useCart} from "./CartAtom";
+import axios from "axios";
 
 export default function Cart() {
 
     const {cartInfo, getCartTotal} = useCart();
+    const [hide,setHide] = useState("");
+    const [promo,setPromo] = useState("");
+    const [delivery,setDelivery] = useState(10);
+    const [discount,setDiscount] = useState(0);
+
+
+    const fullCartTotal = ()=>{
+
+        const itemTotal = getCartTotal();
+        const finalTotal = (Number(itemTotal) + Number(delivery) - 
+         discount*Number(itemTotal)).toFixed(2);
+
+        return finalTotal;
+    }
+
+
+
+    const checkPromo = (e)=>{
+
+        const val = e.target.value;
+        const textLength = e.target.value.length;
+        if(textLength<10)setPromo(val);
+
+
+    }
+
+    const checkDisplay = ()=>{
+        if(cartInfo.length===0) setHide("hide")
+        else setHide("");
+    }
+
+
+    useEffect(()=>{
+
+        const validatePromo = async () => {
+            try {
+
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/promo/${promo}`,{withCredentials:true});
+                const result = Number(response.data.discount_rate);
+                setDiscount(result);
+                                        
+            }
+            catch (error) {
+                console.error("Error Fetching in frontend: ", error);
+            }
+        };
+
+
+        if(promo.length == 9)
+            {
+                if(promo!="FREEDELIV")
+                {
+                    validatePromo();
+                }
+                // console.log(discount);
+            }
+
+
+    },[promo])
+
+    useEffect(()=>{
+
+        checkDisplay();
+
+    },[cartInfo])
+
+
 
     return (
         <>
@@ -24,18 +92,18 @@ export default function Cart() {
                                 ):(
                                     <>
                                     {cartInfo.map((item)=>(
-                                        <CartItem id={item.product_id} name={item.product_name} category={item.product_category} dimension={item.product_dimension} qty={item.product_quantity} image={item.product_image} price={item.price} series={item.product_series} />
+                                        <CartItem id={item.product_id} name={item.product_name} category={item.product_category} dimension={item.product_dimension} qty={item.product_quantity} image={item.product_image} price={item.price} series={item.product_series} stock={item.product_stock} />
                                     ))}
                                     </>
                                 )
                                 }
-                                <div className="pt-4" id="cart-promocode">
+                                <div className={`pt-4 ${hide}`} id="cart-promocode">
                                     <div className="d-flex flex-wrap border-top border-bottom p-0 py-4 cart-promo-section">
                                         <div className="col-7 col-md-8 col-lg-9 header-style header-text">Promo Code</div>
-                                        <div className="col-4 col-md-4 col-lg-3 position-relative"><input type="text" className="cart-promo-input form-control" /></div>
+                                        <div className="col-4 col-md-4 col-lg-3 position-relative"><input type="text" className="cart-promo-input form-control" onChange={checkPromo} value={promo}/></div>
                                     </div>
                                 </div>
-                                <div className="py-4 cart-delivery-section" id="cart-delivery">
+                                <div className={`py-4 cart-delivery-section ${hide}`} id="cart-delivery">
                                     <div className="d-flex flex-wrap">
                                         <div className="col-7 col-md-8 col-lg-9 header-style header-text pb-4 ">Delivery Address</div>
                                         <div className="col-4 col-md-4 col-lg-3 position-relative text-end">+ New Address</div>
@@ -71,28 +139,28 @@ export default function Cart() {
                                 </div>
 
                             </div>
-                            <div className="col-lg-4 position-relative">
+                            <div className={`col-lg-4 position-relative ${hide}`}>
                                 <div className="sticky-top">
                                     <div className="cart-summary-tab d-flex flex-wrap border py-2 px-3 w-100">
                                         <div className="w-100">
                                             <div className="header-text header-style pb-2 position-relative">Summary</div>
                                             <div className="cart-item-tab d-flex flex-wrap justify-content-between">
                                                 <div className="">Item(s) subtotal</div>
-                                                <div className="cart-subtotal">$10.00</div>
+                                                <div className="cart-subtotal">${getCartTotal()}</div>
                                             </div>
                                             <div className="cart-item-tab d-flex flex-wrap justify-content-between">
                                                 <div className="">Delivery Fee</div>
-                                                <div className="cart-delivery">$10.00</div>
+                                                <div className="cart-delivery">${delivery}</div>
                                             </div>
                                             <div className="cart-item-tab d-flex flex-wrap justify-content-between">
                                                 <div className="">Promo Code</div>
-                                                <div className="cart-promo">$100.00</div>
+                                                <div className="cart-promo">$0.00</div>
                                             </div>
                                         </div>
                                         <div className="w-100 align-self-end pb-2 pt-5">
                                             <div className="cart-item-tab d-flex flex-wrap justify-content-between">
                                                 <div className="header-text"><strong>Order Total:</strong></div>
-                                                <div className="cart-total header-text"><strong>$100.00</strong></div>
+                                                <div className="cart-total header-text"><strong>${fullCartTotal()}</strong></div>
                                             </div>
                                         </div>
                                     </div>

@@ -4,6 +4,8 @@ import Home from './Home';
 import ProductInfo from './ProductInfo';
 import Products from './Products';
 import Cart from './Cart';
+import Login from './Login';
+import Register from './Register';
 import Footer from './Footer';
 import axios from 'axios';
 
@@ -29,8 +31,8 @@ export default function App() {
         <Route path="/products/:id" component={ProductInfo} />
         <Route path="/products" component={Products} />
         <Route path="/cart" component={Cart}/>
-        {/* <Route path="/register" component={Registration}/> */}
-        {/* <Route path="/login" component={Login}/> */}
+        <Route path="/register" component={Register}/>
+        <Route path="/login" component={Login}/>
         {/* <Route path="/admin-dashboard" component={Dashboard}/> */}
       </Switch>
     </>
