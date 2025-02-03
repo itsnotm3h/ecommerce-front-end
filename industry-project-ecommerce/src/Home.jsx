@@ -27,7 +27,6 @@ export default function HomePage (){
                 <div className="col-12 col-lg-3 main-jfy-item short m-auto jfy-3"></div>
             </div>
         </section>
-        <Footer/>
         </>
     )
 }

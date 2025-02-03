@@ -35,6 +35,7 @@ export default function App() {
         <Route path="/login" component={Login}/>
         {/* <Route path="/admin-dashboard" component={Dashboard}/> */}
       </Switch>
+      <Footer />
     </>
   )
 };

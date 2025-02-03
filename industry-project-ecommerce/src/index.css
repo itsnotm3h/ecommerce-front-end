@@ -12,7 +12,11 @@ body {
   .text-black {
     color: #222222;
   }
-  
+
+  .error{
+    font-size: 0.8em!important;
+  }
+
   .hide {
     display: none !important;
   }
@@ -305,4 +309,32 @@ body {
   .footer {
     background-color: aquamarine;
   }
-  
+
+  input{
+    border:unset;
+  }
+
+  .input{
+    border: 1px solid black;
+  }
+
+  /*Register */
+  .invalid{
+    border-color: var(--bs-form-invalid-border-color)!important;
+    padding-right: calc(1.5em + .75rem);
+    /* background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem); */
+  }
+  .link{
+    text-decoration: none;
+  }
+
+  /* .link:hover{
+    color:aqua!important;
+  } */
+
+  .form-select,.form-check-input,.form-control{
+    border-radius: 0!important;
+    border-color: #000;
+  }
