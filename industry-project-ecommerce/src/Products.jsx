@@ -29,7 +29,7 @@ export default function Products() {
     return (
         <>
             <Navbar type="text-black" />
-            <div className="container-fluid p-5 vh-100">
+            <div className="container-fluid p-5">
                 <div className="container h-100 pt-5">
                     <div className="row">
                         <div className="col-lg-3 pe-5">

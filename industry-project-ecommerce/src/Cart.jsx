@@ -78,7 +78,7 @@ export default function Cart() {
     return (
         <>
             <Navbar type="text-black" />
-            <div className="container-fluid p-5 vh-100">
+            <div className="container-fluid p-5">
                 <div className="container pt-5">
                     <div>
                         <div className="header-text font-700 sectionTitle">Shopping Cart</div>
