@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Navbar from "./Navbar";
 import { useRoute } from 'wouter';
 import axios from 'axios';
@@ -9,13 +9,13 @@ import { useCart } from "./CartAtom";
 export default function ProductInfo() {
 
     const [info, setInfo] = useState("");
-    const [stock, setStock] = useState(0);
+    const [stock, setStock] = useState();
     const [dimension, setDimension] = useState({});
 
     const [match, params] = useRoute('/products/:id');
     const id = `${params.id}`;
 
-    const {cartInfo, addToCart, getCartQty } = useCart();
+    const {cartInfo,updateCart,addToCart,getCartQty,getCart } = useCart();
 
     const displayDimension = () => {
 
@@ -77,27 +77,33 @@ export default function ProductInfo() {
         addToCart({
             "product_id": product.product_id,
             "product_name": product.product_name,
-            "product_quantity": currentQty,
+            "product_qty": currentQty,
             "price": product.product_price,
             "product_image": product.product_image,
             "product_dimension": displayDimension(),
             "product_category": product.category_name,
-            "product_series": product.product_series
+            "product_series": product.product_series,
+            "product_stock": stock
+
         })
     }
 
-
+    useEffect(() => {
+            getCart();
+        }, []);
 
 
     useEffect(() => {
 
         if (id) {
+
             const fetchInfo = async () => {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${params.id}`);
                     setInfo(response.data);
                     setStock(response.data.product_stock);
                     setDimension(response.data.dimension[0]); // Assuming there's only one dimension object
+
                     setCounter(getCartQty(response.data.product_id));
 
                 }
@@ -109,14 +115,21 @@ export default function ProductInfo() {
             fetchInfo();
 
         }
-    }, [id]);
+    }, [id,cartInfo]);
 
     useEffect(() => {
         if (info && info.product_id) {
             // handleCart(info, count);
-            console.log(cartInfo);
+            const debouncedTimeout = setTimeout(()=>{
+                updateCart();
+
+
+
+            },500);
+
+            return()=> clearTimeout(debouncedTimeout);
         }
-    }, [count, info]);
+    }, [count]);
 
 
     return (

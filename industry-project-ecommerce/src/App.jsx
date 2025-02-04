@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { Route, Switch } from 'wouter';
 import Home from './Home';
 import ProductInfo from './ProductInfo';
@@ -6,24 +6,24 @@ import Products from './Products';
 import Cart from './Cart';
 import Login from './Login';
 import Register from './Register';
-import Footer from './Footer';
+
 import axios from 'axios';
 
 
-export default function App() {
 
+export default function App() {
+  
 
   useEffect(()=>{
     const initSession = async ()=>{
       const response =  await axios.post(`${import.meta.env.VITE_API_URL}/session/init`,{},{withCredentials:true})
-      .then(response => console.log(response.data))
+      .then()
       .catch(error => console.error(error));
     };
 
     initSession();
   },[]);
   
-
   return (
     <>
       <Switch>

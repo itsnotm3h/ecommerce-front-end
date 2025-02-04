@@ -3,9 +3,11 @@ import { useCart } from "./CartAtom";
 
 export default function CartItem (props){
 
-    const {cartInfo, updateCart} = useCart();
+    const {cartInfo, updateCart,addToCart} = useCart();
 
     const [count, setCounter] = useState(props.qty);
+
+
     
         //This is the addCart function
         // on click update the session immediately. 
@@ -15,19 +17,39 @@ export default function CartItem (props){
             if (count > 1) {
                 const newCount = count - 1;
                 setCounter(newCount);
-                updateCart(props.id,newCount)
+                addToCart({
+                    "product_id": props.id,
+                    "product_name": props.name,
+                    "product_qty": newCount,
+                    "price": props.price,
+                    "product_image": props.image,
+                    "product_dimension": props.dimension,
+                    "product_category": props.category,
+                    "product_series": props.series,
+                })
             }
+
         };
     
         const addCart = () => {
-    
 
             const stock = props.stock;
 
+
             if (count < stock) {
+
                 const newCount = count + 1;
                 setCounter(newCount);
-                updateCart(props.id,newCount)
+                addToCart({
+                    "product_id": props.id,
+                    "product_name": props.name,
+                    "product_qty": newCount,
+                    "price": props.price,
+                    "product_image": props.image,
+                    "product_dimension": props.dimension,
+                    "product_category": props.category,
+                    "product_series": props.series,
+                })
             }
             
         };
@@ -39,12 +61,18 @@ export default function CartItem (props){
 
         }
 
-        // useEffect(() => {
-        //             // handleCart(info, count);
-        //             console.log(cartInfo);
-            
-        //     }, [count]);
-    
+         useEffect(() => {
+          
+                   const debouncedTimeout = setTimeout(()=>{
+                       updateCart();
+                       console.log(cartInfo);
+       
+       
+                   },500);
+       
+                   return()=> clearTimeout(debouncedTimeout);
+        
+           }, [cartInfo]);
 
 
 
@@ -72,7 +100,7 @@ export default function CartItem (props){
                     <div className="col-5 d-flex productInfo-button justify-content-between">
                         <div className="productInfo-Minus px-2" onClick={() => { minusCart() }}>-</div>
                         <div className="productInfo-Quantity">{count}</div>
-                        <div className="productInfo-Add px-2" onClick={() => { addCart() }} >+</div>
+                        <div className="productInfo-Add px-2" onClick={() => { addCart() }}>+</div>
                     </div>
                 </div>
             </div>

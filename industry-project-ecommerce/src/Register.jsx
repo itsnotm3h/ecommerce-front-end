@@ -50,13 +50,13 @@ export default function Register() {
             console.log("Registration successful:", response.data);
             setLocation("/");
 
-            // console.log(values)
-
         } catch (error) {
             console.error("Registration failed: ", error.response?.data || error.message);
 
         } finally {
             formikHelpers.setSubmitting(false);
+            window.location.reload();
+
         }
     }
 

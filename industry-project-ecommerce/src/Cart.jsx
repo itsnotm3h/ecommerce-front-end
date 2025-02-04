@@ -5,13 +5,15 @@ import {useCart} from "./CartAtom";
 import axios from "axios";
 
 export default function Cart() {
+      
 
-    const {cartInfo, getCartTotal} = useCart();
-    const [hide,setHide] = useState("");
+    const {cartInfo,getCart,getCartTotal} = useCart();
+    const [hide,setHide] = useState("hide");
     const [promo,setPromo] = useState("");
     const [delivery,setDelivery] = useState(10);
     const [discount,setDiscount] = useState(0);
 
+    
 
     const fullCartTotal = ()=>{
 
@@ -39,8 +41,13 @@ export default function Cart() {
     }
 
 
-    useEffect(()=>{
+    
 
+    useEffect(() => {
+        getCart();
+    }, []);
+
+    useEffect(()=>{
         const validatePromo = async () => {
             try {
 
@@ -92,7 +99,7 @@ export default function Cart() {
                                 ):(
                                     <>
                                     {cartInfo.map((item)=>(
-                                        <CartItem id={item.product_id} name={item.product_name} category={item.product_category} dimension={item.product_dimension} qty={item.product_quantity} image={item.product_image} price={item.price} series={item.product_series} stock={item.product_stock} />
+                                        <CartItem id={item.product_id} name={item.product_name} category={item.category_name} dimension={item.product_dimension} qty={item.product_qty} image={item.product_image} price={item.product_price} series={item.product_series} stock={item.product_stock} />
                                     ))}
                                     </>
                                 )

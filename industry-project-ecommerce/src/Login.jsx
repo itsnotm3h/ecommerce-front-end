@@ -4,19 +4,17 @@ import {Formik, Field, Form} from 'formik';
 import * as Yup from 'yup';
 import {useLocation} from 'wouter';
 import axios from "axios";
+import {useStatus} from "./userAtom";
 
 export default function Login() {
+    
+    
+    const [, setLocation] = useLocation();
+    const {setStatus} = useStatus();
 
     const initialValues = {
-        first_name: '',
-        last_name: '',
         email: '',
-        password: '',
-        confirm_password: '',
-        dob_day: '',
-        dob_month: '',
-        dob_year: '',
-        marketing_preference: ''
+        password: ''
     }
 
     const validationSchema = Yup.object({
@@ -26,12 +24,10 @@ export default function Login() {
 
     const handleSubmit = async (values, formikHelpers) => {
         try{
-            const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, values);
-            console.log("Registration successful:", response.data);
+            const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, values,{withCredentials:true});
+            
+            setStatus(response.data.status);
             setLocation("/");
-
-            // console.log(values)
-
         } catch (error) {
             console.error("Registration failed: ", error.response?.data || error.message);
 
@@ -62,12 +58,12 @@ export default function Login() {
                                                                <div className="row gy-4 gx-3 pt-3">
                                                                    <div className="col-12">
                                                                        <label className="w-100">Username</label>
-                                                                       <Field className={`input w-100 form-control ${formik.errors.email && formik.touched.email ? "invalid" : ""}`} type="text" id="first_name" name="first_name"
+                                                                       <Field className={`input w-100 form-control ${formik.errors.email && formik.touched.email ? "invalid" : ""}`} type="email" id="email" name="email"
                                                                        />
                                                                        {formik.errors.email && formik.touched.email ? <small className="text-danger error">{formik.errors.email}</small> : null}
                                                                    </div>
                                                                    <div className="col-12"><label className="w-100">Password</label>
-                                                                       <Field className={`input w-100 form-control ${formik.errors.password && formik.touched.password ? "invalid" : ""}`} type="text" id="last_name" name="last_name" />
+                                                                       <Field className={`input w-100 form-control ${formik.errors.password && formik.touched.password ? "invalid" : ""}`} type="password" id="password" name="password" />
                                                                        {formik.errors.password && formik.touched.password ? <small className="text-danger error">{formik.errors.password}</small> : null}
                                                                    </div>
                                                                    <div className="col-12">                                                                       <button className="button w-100 text-center bg-dark text-white p-1 mt-4" type="submit"
