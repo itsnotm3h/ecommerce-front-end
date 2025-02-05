@@ -4,7 +4,6 @@ import Immutable from "seamless-immutable";
 
 const itemInfo = Immutable([]);
 
-
 export const cartAtom = atom(itemInfo);
 // need to load this to stop 
 export const cartLoadingAtom = atom(false);
@@ -38,14 +37,15 @@ export const useCart = () => {
     const addToCart = (product) => {
         setCart(currentCart => {
 
-            const currentIndex = cartInfo.findIndex(i => i.product_id === product.product_id);
+            const currentIndex = currentCart.findIndex(i => i.product_id === product.product_id);
             if (currentIndex !== -1) {
                 
                 let newQty = product.product_qty;
 
-                if (newQty <= 0) {
+                if (newQty < 0) {
                     // Remove the item using .delete() instead of deleteIn()
-                    return currentCart.delete(currentIndex);
+                    return currentCart.filter(item => item.product_id !== product.product_id);
+
                 } else {
                     // Update the quantity using setIn()
                     return currentCart.setIn([currentIndex, "product_qty"], newQty);
@@ -63,18 +63,16 @@ export const useCart = () => {
         )
     }
 
-    const updateCart = async () =>{
-
-        setIsLoading(true);
+    const updateCart = async (statusInfo) =>{
 
         try{
-
+            setIsLoading(true);
             const updatedCart = cartInfo.map((item) => ({
                 product_id: item.product_id,
                 product_qty: item.product_qty,
             }));
 
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/cart/`,{ cartItems: updatedCart },{withCredentials:true});
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{ cartItems: updatedCart },{withCredentials:true});
 
 
         } catch(error)
@@ -83,12 +81,15 @@ export const useCart = () => {
 
         } finally{
             setIsLoading(false);
+
         }
 
     }
 
+
     const getCartQty = (product) => {
         if (!product) return 0;  // Avoid errors if product is undefined
+        const productNo = Number(product); 
         const currentIndex = cartInfo.findIndex(i => i.product_id === product);
         return currentIndex !== -1 ? cartInfo[currentIndex].product_qty : 0;
         }

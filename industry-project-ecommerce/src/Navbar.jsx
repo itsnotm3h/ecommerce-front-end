@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch, Link } from 'wouter';
-import { useStatus } from "./userAtom";
+import { useSession } from "./userAtom";
+import axios from "axios";
 
 
 
 export default function Navbar(props) {
 
     const [isNavbar, setNavbar] = useState(false);
-    const { statusInfo, setStatus } = useStatus();
-
+    const {statusInfo,getStatus,setStatus} = useSession();
 
 
     const hamburgerToggle = () => {
@@ -17,19 +17,18 @@ export default function Navbar(props) {
 
     const logOut = async ()=>{
         try{
-            const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/logout`);
-            console.log("Registration successful:", response.data);
+            const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/logout`,{},{withCredentials:true});
+            console.log("loggedout:", response.data);
             setStatus("");
-            setLocation("/");
         } catch (error) {
             console.error("logout failed: ", error.response?.data || error.message);
         } finally{
-            window.location.reload();
+            // window.location.reload();
         }
     }
 
     useEffect(() => {
-
+        
         const checkNavbar = () => {
             setNavbar(window.innerWidth >= 992);
         }
@@ -40,7 +39,7 @@ export default function Navbar(props) {
 
         return () => window.removeEventListener('resize', checkNavbar);
 
-    }, [])
+    }, [statusInfo])
 
 
     return (

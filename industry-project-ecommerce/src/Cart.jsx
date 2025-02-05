@@ -3,6 +3,8 @@ import Navbar from "./Navbar";
 import CartItem from "./CartItem";
 import {useCart} from "./CartAtom";
 import axios from "axios";
+import { useSession } from "./userAtom";
+
 
 export default function Cart() {
       
@@ -10,29 +12,21 @@ export default function Cart() {
     const {cartInfo,getCart,getCartTotal} = useCart();
     const [hide,setHide] = useState("hide");
     const [promo,setPromo] = useState("");
-    const [delivery,setDelivery] = useState(10);
     const [discount,setDiscount] = useState(0);
-
-    
-
-    const fullCartTotal = ()=>{
-
-        const itemTotal = getCartTotal();
-        const finalTotal = (Number(itemTotal) + Number(delivery) - 
-         discount*Number(itemTotal)).toFixed(2);
-
-        return finalTotal;
-    }
-
+    const [delivery,setDelivery] = useState(10);
+    const [total,setTotal] = useState(0);
+    const {statusInfo,getStatus,initSession} = useSession();
 
 
     const checkPromo = (e)=>{
-
         const val = e.target.value;
         const textLength = e.target.value.length;
-        if(textLength<10)setPromo(val);
-
-
+        if(textLength<10)
+            {
+                setPromo(val);
+                validatePromo(val);
+            
+            }
     }
 
     const checkDisplay = ()=>{
@@ -41,44 +35,47 @@ export default function Cart() {
     }
 
 
+    const validatePromo = async (item) => {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/promo/${item}`,{withCredentials:true});
+            let result = response.data.discount_rate;
+
+
+            if(result==null)
+            {
+                result = 0;
+            }
+
+            setDiscount(Number(result));
+                                    
+
+    };
     
+
+    const fullCartTotal = ()=>{
+
+        const itemTotal = getCartTotal();
+        const finalTotal = (Number(itemTotal) + Number(delivery) - 
+        discount*Number(itemTotal)).toFixed(2);
+        
+        setTotal(finalTotal);
+    }
+
+
+
 
     useEffect(() => {
         getCart();
+        checkDisplay();
+        fullCartTotal(discount);
     }, []);
 
-    useEffect(()=>{
-        const validatePromo = async () => {
-            try {
-
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/promo/${promo}`,{withCredentials:true});
-                const result = Number(response.data.discount_rate);
-                setDiscount(result);
-                                        
-            }
-            catch (error) {
-                console.error("Error Fetching in frontend: ", error);
-            }
-        };
-
-
-        if(promo.length == 9)
-            {
-                if(promo!="FREEDELIV")
-                {
-                    validatePromo();
-                }
-                // console.log(discount);
-            }
-
-
-    },[promo])
 
     useEffect(()=>{
 
         checkDisplay();
+        fullCartTotal(discount);
 
-    },[cartInfo])
+    },[cartInfo,[promo]])
 
 
 
@@ -167,7 +164,7 @@ export default function Cart() {
                                         <div className="w-100 align-self-end pb-2 pt-5">
                                             <div className="cart-item-tab d-flex flex-wrap justify-content-between">
                                                 <div className="header-text"><strong>Order Total:</strong></div>
-                                                <div className="cart-total header-text"><strong>${fullCartTotal()}</strong></div>
+                                                <div className="cart-total header-text"><strong>{total}</strong></div>
                                             </div>
                                         </div>
                                     </div>

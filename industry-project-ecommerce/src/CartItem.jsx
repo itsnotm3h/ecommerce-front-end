@@ -1,78 +1,77 @@
 import React,{useEffect,useState} from "react";
+import { useLocation } from "wouter";
 import { useCart } from "./CartAtom";
+import { useSession } from "./userAtom";
 
 export default function CartItem (props){
 
-    const {cartInfo, updateCart,addToCart} = useCart();
+    const {cartInfo,updateCart,addToCart,getCart} = useCart();
+    const {statusInfo} = useSession();
+
+    const [, setLocation] = useLocation();
 
     const [count, setCounter] = useState(props.qty);
 
+    const stock = props.stock;
 
     
         //This is the addCart function
         // on click update the session immediately. 
     
         const minusCart = () => {
-            
-            if (count > 1) {
+        
+            if (count > 0) {
                 const newCount = count - 1;
+                handleCart(newCount); 
                 setCounter(newCount);
-                addToCart({
-                    "product_id": props.id,
-                    "product_name": props.name,
-                    "product_qty": newCount,
-                    "price": props.price,
-                    "product_image": props.image,
-                    "product_dimension": props.dimension,
-                    "product_category": props.category,
-                    "product_series": props.series,
-                })
             }
-
+            else{
+            
+            }
         };
     
         const addCart = () => {
-
-            const stock = props.stock;
-
-
+    
             if (count < stock) {
-
                 const newCount = count + 1;
+                handleCart(newCount);
                 setCounter(newCount);
-                addToCart({
-                    "product_id": props.id,
-                    "product_name": props.name,
-                    "product_qty": newCount,
-                    "price": props.price,
-                    "product_image": props.image,
-                    "product_dimension": props.dimension,
-                    "product_category": props.category,
-                    "product_series": props.series,
-                })
+                console.log(statusInfo);
+
             }
             
         };
 
         const removeCart = ()=>{
 
-            setCounter(0);
-            updateCart(props.id,0)
-
         }
+
+
+        const handleCart = (currentQty) => {
+
+            addToCart({
+                "product_id": props.id,
+                "product_name": props.name,
+                "product_qty": currentQty,
+                "price": props.price,
+                "product_image": props.image,
+                "product_dimension": props.dimension,
+                "product_category": props.category,
+                "product_series": props.series,
+            })
+        }
+
+
 
          useEffect(() => {
           
-                   const debouncedTimeout = setTimeout(()=>{
-                       updateCart();
-                       console.log(cartInfo);
-       
-       
+                   const debouncedTimeout = setTimeout(async ()=>{
+                       await updateCart(statusInfo);
                    },500);
        
                    return()=> clearTimeout(debouncedTimeout);
         
-           }, [cartInfo]);
+           }, [cartInfo,count]);
 
 
 
@@ -100,12 +99,12 @@ export default function CartItem (props){
                     <div className="col-5 d-flex productInfo-button justify-content-between">
                         <div className="productInfo-Minus px-2" onClick={() => { minusCart() }}>-</div>
                         <div className="productInfo-Quantity">{count}</div>
-                        <div className="productInfo-Add px-2" onClick={() => { addCart() }}>+</div>
+                        <div className={`productInfo-Add px-2 ${count == stock ? "disabled" : ""}`} onClick={() => { addCart() }}>+</div>
                     </div>
                 </div>
             </div>
             <div className="col-5 align-self-center text-end">
-                Subtotal: ${(props.price*props.qty)}<br/>
+                Subtotal:<br/>${(props.price*props.qty).toFixed(2)}<br/>
                 
             </div>
         </div>

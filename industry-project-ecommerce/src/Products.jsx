@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import ProductCard from "./ProductCard";
 import axios from 'axios';
+// import { useSession } from "./userAtom";
+
 
 
 export default function Products() {
 
     const [product, setProducts] = useState([]);
+    //   const {statusInfo,getStatus,initSession} = useSession;
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -21,6 +24,7 @@ export default function Products() {
         };
 
         fetchProducts();
+
     }, []);
 
 

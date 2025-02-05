@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from './Navbar';
 import Footer from "./Footer";
 import { Router } from "wouter";
 
 
-
-
 export default function HomePage (){
+
+    
+
     return(
         <>
         <Navbar type="text-white" />

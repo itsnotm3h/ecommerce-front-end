@@ -6,24 +6,31 @@ import Products from './Products';
 import Cart from './Cart';
 import Login from './Login';
 import Register from './Register';
-
-import axios from 'axios';
-
+import { useSession } from "./userAtom";
+import axios from "axios";
 
 
 export default function App() {
-  
+
+
+  const {statusInfo,getStatus} = useSession();
 
   useEffect(()=>{
     const initSession = async ()=>{
       const response =  await axios.post(`${import.meta.env.VITE_API_URL}/session/init`,{},{withCredentials:true})
-      .then()
+      .then(
+        // response=>console.log(response.data)
+      )
       .catch(error => console.error(error));
     };
 
+
+
     initSession();
-  },[]);
-  
+    getStatus();
+  },[])
+
+
   return (
     <>
       <Switch>

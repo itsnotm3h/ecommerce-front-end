@@ -4,13 +4,13 @@ import {Formik, Field, Form} from 'formik';
 import * as Yup from 'yup';
 import {useLocation} from 'wouter';
 import axios from "axios";
-import {useStatus} from "./userAtom";
+import {useSession} from "./userAtom";
 
 export default function Login() {
     
     
     const [, setLocation] = useLocation();
-    const {setStatus} = useStatus();
+    const {setStatus} = useSession();
 
     const initialValues = {
         email: '',

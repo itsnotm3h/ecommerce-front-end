@@ -3,6 +3,8 @@ import Navbar from "./Navbar";
 import { useRoute } from 'wouter';
 import axios from 'axios';
 import { useCart } from "./CartAtom";
+import { useSession } from "./userAtom";
+
 
 
 
@@ -11,6 +13,7 @@ export default function ProductInfo() {
     const [info, setInfo] = useState("");
     const [stock, setStock] = useState();
     const [dimension, setDimension] = useState({});
+    const {statusInfo,getStatus} = useSession();
 
     const [match, params] = useRoute('/products/:id');
     const id = `${params.id}`;
@@ -66,14 +69,11 @@ export default function ProductInfo() {
             handleCart(info, newCount); 
         }
         
-
     };
 
     const handleCart = (product, currentQty) => {
 
-        if (!product || !product.product_id) return; // Avoid adding undefined products
-        const existingProduct = cartInfo.find(i => i.product_id === product.product_id);
-    
+        if (!product || !product.product_id) return; // Avoid adding undefined products    
         addToCart({
             "product_id": product.product_id,
             "product_name": product.product_name,
@@ -84,12 +84,13 @@ export default function ProductInfo() {
             "product_category": product.category_name,
             "product_series": product.product_series,
             "product_stock": stock
-
         })
     }
 
     useEffect(() => {
             getCart();
+            getStatus();
+            // initSession();
         }, []);
 
 
@@ -102,7 +103,7 @@ export default function ProductInfo() {
                     const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${params.id}`);
                     setInfo(response.data);
                     setStock(response.data.product_stock);
-                    setDimension(response.data.dimension[0]); // Assuming there's only one dimension object
+                    setDimension(response.data.product_dimension[0]); // Assuming there's only one dimension object
 
                     setCounter(getCartQty(response.data.product_id));
 
@@ -121,7 +122,7 @@ export default function ProductInfo() {
         if (info && info.product_id) {
             // handleCart(info, count);
             const debouncedTimeout = setTimeout(()=>{
-                updateCart();
+                updateCart(statusInfo);
 
 
 
