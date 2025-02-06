@@ -73,12 +73,13 @@ export default function ProductInfo() {
 
     const handleCart = (product, currentQty) => {
 
+
         if (!product || !product.product_id) return; // Avoid adding undefined products    
         addToCart({
             "product_id": product.product_id,
             "product_name": product.product_name,
             "product_qty": currentQty,
-            "price": product.product_price,
+            "product_price": product.product_price,
             "product_image": product.product_image,
             "product_dimension": displayDimension(),
             "product_category": product.category_name,
@@ -88,7 +89,7 @@ export default function ProductInfo() {
     }
 
     useEffect(() => {
-            getCart();
+            getCart(statusInfo);
             getStatus();
             // initSession();
         }, []);

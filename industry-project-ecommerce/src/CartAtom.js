@@ -13,12 +13,12 @@ export const useCart = () => {
     const [isLoading, setIsLoading] = useAtom(cartLoadingAtom);
 
 
-    const getCart = async ()=>
+    const getCart = async (statusInfo)=>
     {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart`,{withCredentials:true});
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{withCredentials:true});
             console.log(response.data);
             setCart(Immutable(response.data));
         }
@@ -36,6 +36,8 @@ export const useCart = () => {
 
     const addToCart = (product) => {
         setCart(currentCart => {
+
+            console.log(product)
 
             const currentIndex = currentCart.findIndex(i => i.product_id === product.product_id);
             if (currentIndex !== -1) {

@@ -64,7 +64,8 @@ export default function Cart() {
 
 
     useEffect(() => {
-        getCart();
+        console.log(statusInfo)
+        getCart(statusInfo);
         checkDisplay();
         fullCartTotal(discount);
     }, []);
