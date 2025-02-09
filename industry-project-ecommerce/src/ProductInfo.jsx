@@ -18,7 +18,7 @@ export default function ProductInfo() {
     const [match, params] = useRoute('/products/:id');
     const id = `${params.id}`;
 
-    const {cartInfo,updateCart,addToCart,getCartQty,getCart } = useCart();
+    const {updateCart,addToCart,getCartQty,getCart,fetchCart } = useCart();
 
     const displayDimension = () => {
 
@@ -45,6 +45,8 @@ export default function ProductInfo() {
 
         return (fullString)
     }
+
+    const cart = fetchCart(statusInfo);
 
 
     const [count, setCounter] = useState(0);
@@ -105,7 +107,6 @@ export default function ProductInfo() {
                     setInfo(response.data);
                     setStock(response.data.product_stock);
                     setDimension(response.data.product_dimension[0]); // Assuming there's only one dimension object
-
                     setCounter(getCartQty(response.data.product_id));
 
                 }
@@ -117,7 +118,7 @@ export default function ProductInfo() {
             fetchInfo();
 
         }
-    }, [id,cartInfo]);
+    }, [id,cart]);
 
     useEffect(() => {
         if (info && info.product_id) {
@@ -158,7 +159,7 @@ export default function ProductInfo() {
                                             heart_plus
                                         </span></div>
                                     </div>
-                                    <div className="productInfo-price header-text w-100 sectionTitle">${info.product_price}</div>
+                                    <div className="header-text w-100 sectionTitle">${info.product_price}</div>
                                 </div>
                                 <div className="pt-5">
                                     <div className="font-700">Dimensions</div>

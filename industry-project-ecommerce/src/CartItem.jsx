@@ -5,7 +5,7 @@ import { useSession } from "./userAtom";
 
 export default function CartItem (props){
 
-    const {cartInfo,updateCart,addToCart,getCart} = useCart();
+    const {updateCart,addToCart,getCart,deleteCartItem} = useCart();
     const {statusInfo} = useSession();
 
     const [, setLocation] = useLocation();
@@ -36,14 +36,15 @@ export default function CartItem (props){
                 const newCount = count + 1;
                 handleCart(newCount);
                 setCounter(newCount);
-                console.log(statusInfo);
+                // console.log(statusInfo);
 
             }
             
         };
 
-        const removeCart = ()=>{
-
+        const removeCart = (id)=>{
+            setCounter(0);
+            handleCart(0);
         }
 
 
@@ -61,21 +62,6 @@ export default function CartItem (props){
             })
         }
 
-
-
-         useEffect(() => {
-          
-                   const debouncedTimeout = setTimeout(async ()=>{
-                       await updateCart(statusInfo);
-                   },500);
-       
-                   return()=> clearTimeout(debouncedTimeout);
-        
-           }, [cartInfo,count]);
-
-
-
-
     return(
     <div key={props.id} className="d-flex flex-wrap w-100 pb-5">
     <div className="col-4 col-lg-3">
@@ -84,7 +70,7 @@ export default function CartItem (props){
     <div className="col-8 col-lg-9 py-lg-4 ps-4 position-relative d-flex flex-wrap">
         <div className="w-100">
             <div className="position-absolute text-black cart-item-delete"><span className="material-symbols-outlined" onClick={()=>{
-                removeCart()
+                removeCart(props.id)
             }}>
                 delete_forever
             </span></div>

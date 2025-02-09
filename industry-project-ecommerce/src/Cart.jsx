@@ -4,19 +4,31 @@ import CartItem from "./CartItem";
 import {useCart} from "./CartAtom";
 import axios from "axios";
 import { useSession } from "./userAtom";
+import {useLocation} from 'wouter';
+
 
 
 export default function Cart() {
       
 
-    const {cartInfo,getCart,getCartTotal} = useCart();
-    const [hide,setHide] = useState("hide");
+    const {
+        getCart,
+        getCartTotal,
+        fetchCart,
+        isLoading
+    } = useCart();
+
     const [promo,setPromo] = useState("");
     const [discount,setDiscount] = useState(0);
     const [delivery,setDelivery] = useState(10);
     const [total,setTotal] = useState(0);
+        const [, setLocation] = useLocation();
+    
+
+    
     const {statusInfo,getStatus,initSession} = useSession();
 
+    const cart = fetchCart(statusInfo);
 
     const checkPromo = (e)=>{
         const val = e.target.value;
@@ -29,10 +41,6 @@ export default function Cart() {
             }
     }
 
-    const checkDisplay = ()=>{
-        if(cartInfo.length===0) setHide("hide")
-        else setHide("");
-    }
 
 
     const validatePromo = async (item) => {
@@ -46,8 +54,7 @@ export default function Cart() {
             }
 
             setDiscount(Number(result));
-                                    
-
+                                
     };
     
 
@@ -60,23 +67,44 @@ export default function Cart() {
         setTotal(finalTotal);
     }
 
+    const handleCheckout = async ()=>{
+        try{
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/checkout`,{},{withCredentials:true})
+            console.log(response.data);
+
+        } catch (error)
+        {
+            console.error("Error during checkout: ", error);
+            alert("Checkout failed. Please try again");
+        } finally {
+
+        }
+    };
 
 
 
     useEffect(() => {
-        console.log(statusInfo)
         getCart(statusInfo);
-        checkDisplay();
         fullCartTotal(discount);
+
     }, []);
+
+
+    useEffect(() => {
+        const debouncedTimeout = setTimeout(async ()=>{
+        getCart(statusInfo);
+        },100);
+
+        return()=> clearTimeout(debouncedTimeout);
+
+    }, [total]);
 
 
     useEffect(()=>{
 
-        checkDisplay();
         fullCartTotal(discount);
 
-    },[cartInfo,[promo]])
+    },[cart,[promo]])
 
 
 
@@ -90,25 +118,25 @@ export default function Cart() {
                         <div className="row pt-4 justify-content-between">
                             <div className="col-lg-8 pb-5 pe-lg-5">
                                 {/* <CartItem name="test" category="cat" dimension="Die" stock="1" /> */}
-                                {cartInfo.length === 0 ?(
+                                {cart.length === 0 ?(
                                     <>
                                     <p>Your cart is empty.</p>
                                     </>
                                 ):(
                                     <>
-                                    {cartInfo.map((item)=>(
+                                    {cart.map((item)=>(
                                         <CartItem id={item.product_id} name={item.product_name} category={item.category_name} dimension={item.product_dimension} qty={item.product_qty} image={item.product_image} price={item.product_price} series={item.product_series} stock={item.product_stock} />
                                     ))}
                                     </>
                                 )
                                 }
-                                <div className={`pt-4 ${hide}`} id="cart-promocode">
+                                <div className={`pt-4 ${cart.length ===0 ? "hide":""}`} id="cart-promocode">
                                     <div className="d-flex flex-wrap border-top border-bottom p-0 py-4 cart-promo-section">
                                         <div className="col-7 col-md-8 col-lg-9 header-style header-text">Promo Code</div>
                                         <div className="col-4 col-md-4 col-lg-3 position-relative"><input type="text" className="cart-promo-input form-control" onChange={checkPromo} value={promo}/></div>
                                     </div>
                                 </div>
-                                <div className={`py-4 cart-delivery-section ${hide}`} id="cart-delivery">
+                                <div className={`py-4 cart-delivery-section ${cart.length ===0 ? "hide":""} `} id="cart-delivery">
                                     <div className="d-flex flex-wrap">
                                         <div className="col-7 col-md-8 col-lg-9 header-style header-text pb-4 ">Delivery Address</div>
                                         <div className="col-4 col-md-4 col-lg-3 position-relative text-end">+ New Address</div>
@@ -144,7 +172,7 @@ export default function Cart() {
                                 </div>
 
                             </div>
-                            <div className={`col-lg-4 position-relative ${hide}`}>
+                            <div className={`col-lg-4 position-relative ${cart.length ===0 ? "hide":""} `}>
                                 <div className="sticky-top">
                                     <div className="cart-summary-tab d-flex flex-wrap border py-2 px-3 w-100">
                                         <div className="w-100">
@@ -155,7 +183,7 @@ export default function Cart() {
                                             </div>
                                             <div className="cart-item-tab d-flex flex-wrap justify-content-between">
                                                 <div className="">Delivery Fee</div>
-                                                <div className="cart-delivery">${delivery}</div>
+                                                <div className="cart-delivery">${delivery.toFixed(2)}</div>
                                             </div>
                                             <div className="cart-item-tab d-flex flex-wrap justify-content-between">
                                                 <div className="">Promo Code</div>
@@ -165,7 +193,7 @@ export default function Cart() {
                                         <div className="w-100 align-self-end pb-2 pt-5">
                                             <div className="cart-item-tab d-flex flex-wrap justify-content-between">
                                                 <div className="header-text"><strong>Order Total:</strong></div>
-                                                <div className="cart-total header-text"><strong>{total}</strong></div>
+                                                <div className="cart-total header-text"><strong>${total}</strong></div>
                                             </div>
                                         </div>
                                     </div>
@@ -184,7 +212,9 @@ export default function Cart() {
                                     </div>
                                     </div>
                                     <div className="py-4 d-flex">
-                                        <button className="black-btn p-2 ms-auto w-100 header-text" disabled>Check Out</button>
+                                        <button className="black-btn p-2 ms-auto w-100 header-text" onClick={handleCheckout}
+                    disabled={isLoading} 
+                    >{statusInfo ===""? "Login to Checkout": "Checkout"}</button>
                                     </div>
                                 </div>
 

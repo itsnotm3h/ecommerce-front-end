@@ -1,16 +1,22 @@
 import { atom, useAtom } from "jotai";
 import axios from "axios";
 import Immutable from "seamless-immutable";
+import { useEffect } from "react";
+import { useSession } from "./userAtom";
 
-const itemInfo = Immutable([]);
 
-export const cartAtom = atom(itemInfo);
+
+const initialCart = Immutable([]);
+
+export const cartAtom = atom(initialCart);
 // need to load this to stop 
 export const cartLoadingAtom = atom(false);
 
 export const useCart = () => {
     const [cartInfo, setCart] = useAtom(cartAtom);
     const [isLoading, setIsLoading] = useAtom(cartLoadingAtom);
+    const {statusInfo,getStatus,initSession} = useSession();
+    
 
 
     const getCart = async (statusInfo)=>
@@ -19,7 +25,7 @@ export const useCart = () => {
 
         try {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{withCredentials:true});
-            console.log(response.data);
+            // console.log(response.data);
             setCart(Immutable(response.data));
         }
         catch (error) {
@@ -61,11 +67,14 @@ export const useCart = () => {
                     product_qty: 1 
                 })
             }
+
+
+              
         }
         )
     }
 
-    const updateCart = async (statusInfo) =>{
+    const updateCart = async () =>{
 
         try{
             setIsLoading(true);
@@ -88,6 +97,22 @@ export const useCart = () => {
 
     }
 
+    useEffect(() => {
+        if (cartInfo !== initialCart) {
+            updateCart(statusInfo);
+            // console.log(cartInfo);
+        }
+    }, [cartInfo]); // Depend on the cart state
+    
+
+    const deleteCartItem = (product_id) =>{
+        console.log(product_id)
+        setCart((currentCart)=>{
+            console.log(currentCart)
+            currentCart.filter((item)=>item.product_id !== product_id)
+        })
+    }
+
 
     const getCartQty = (product) => {
         if (!product) return 0;  // Avoid errors if product is undefined
@@ -96,15 +121,19 @@ export const useCart = () => {
         return currentIndex !== -1 ? cartInfo[currentIndex].product_qty : 0;
         }
 
+        const fetchCart = () => cartInfo;
+
+
     
 
     return {
-        cartInfo,
         getCartTotal,
         addToCart,
         getCartQty,
         updateCart,
-        getCart
+        getCart,
+        deleteCartItem,
+        fetchCart
     }
 
 }
