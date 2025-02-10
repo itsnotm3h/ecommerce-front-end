@@ -46,7 +46,7 @@ export default function ProductInfo() {
         return (fullString)
     }
 
-    const cart = fetchCart(statusInfo);
+    const cart = fetchCart();
 
 
     const [count, setCounter] = useState(0);
@@ -91,8 +91,9 @@ export default function ProductInfo() {
     }
 
     useEffect(() => {
+        getStatus();
+        console.log(statusInfo)
             getCart(statusInfo);
-            getStatus();
             // initSession();
         }, []);
 
@@ -103,7 +104,9 @@ export default function ProductInfo() {
 
             const fetchInfo = async () => {
                 try {
-                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${params.id}`);
+                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${params.id}`,{headers: {
+                    'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+                  },withCredentials:true});
                     setInfo(response.data);
                     setStock(response.data.product_stock);
                     setDimension(response.data.product_dimension[0]); // Assuming there's only one dimension object
@@ -120,19 +123,19 @@ export default function ProductInfo() {
         }
     }, [id,cart]);
 
-    useEffect(() => {
-        if (info && info.product_id) {
-            // handleCart(info, count);
-            const debouncedTimeout = setTimeout(()=>{
-                updateCart(statusInfo);
+    // useEffect(() => {
+    //     if (info && info.product_id) {
+    //         // handleCart(info, count);
+    //         const debouncedTimeout = setTimeout(()=>{
+    //             updateCart(statusInfo);
 
 
 
-            },500);
+    //         },500);
 
-            return()=> clearTimeout(debouncedTimeout);
-        }
-    }, [count]);
+    //         return()=> clearTimeout(debouncedTimeout);
+    //     }
+    // }, [count]);
 
 
     return (

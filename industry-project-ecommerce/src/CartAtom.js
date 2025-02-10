@@ -22,10 +22,16 @@ export const useCart = () => {
     const getCart = async (statusInfo)=>
     {
         setIsLoading(true);
+        console.log(statusInfo);
 
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{withCredentials:true});
-            // console.log(response.data);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/${statusInfo}`,{   // Use a non-standard User-Agent
+                headers: {
+                  'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+                },
+                withCredentials:true,
+            });
+            console.log(response.data);
             setCart(Immutable(response.data));
         }
         catch (error) {
@@ -83,7 +89,15 @@ export const useCart = () => {
                 product_qty: item.product_qty,
             }));
 
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{ cartItems: updatedCart },{withCredentials:true});
+
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/cart/${statusInfo}`, 
+                { cartItems: updatedCart }, {
+                  headers: {
+                    'ngrok-skip-browser-warning': 'true',  // Skip ngrok browser warning
+                    'Content-Type': 'application/json'  // Ensure Content-Type is set to JSON
+                  },
+                  withCredentials: true  // Send cookies along with the request
+                });
 
 
         } catch(error)
@@ -99,6 +113,7 @@ export const useCart = () => {
 
     useEffect(() => {
         if (cartInfo !== initialCart) {
+            console.log("yes not same")
             updateCart(statusInfo);
             // console.log(cartInfo);
         }

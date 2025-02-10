@@ -44,7 +44,7 @@ export default function Cart() {
 
 
     const validatePromo = async (item) => {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/promo/${item}`,{withCredentials:true});
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/promo/${item}`,{},{withCredentials:true});
             let result = response.data.discount_rate;
 
 
@@ -84,7 +84,8 @@ export default function Cart() {
 
 
     useEffect(() => {
-        getCart(statusInfo);
+        // if(statusInfo=="") getCart(statusInfo);
+        // else fetchCart();
         fullCartTotal(discount);
 
     }, []);

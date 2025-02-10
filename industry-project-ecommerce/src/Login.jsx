@@ -5,12 +5,16 @@ import * as Yup from 'yup';
 import {useLocation} from 'wouter';
 import axios from "axios";
 import {useSession} from "./userAtom";
+import { useCart } from "./CartAtom";
 
 export default function Login() {
     
     
     const [, setLocation] = useLocation();
     const {setStatus} = useSession();
+    const {fetchCart,getCart} = useCart();
+    
+
 
     const initialValues = {
         email: '',
@@ -25,8 +29,9 @@ export default function Login() {
     const handleSubmit = async (values, formikHelpers) => {
         try{
             const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, values,{withCredentials:true});
-            
+            console.log(response.data);
             setStatus(response.data.status);
+            fetchCart();
             setLocation("/");
         } catch (error) {
             console.error("Registration failed: ", error.response?.data || error.message);
