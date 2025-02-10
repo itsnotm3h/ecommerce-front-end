@@ -19,13 +19,13 @@ export const useCart = () => {
     
 
 
-    const getCart = async (statusInfo)=>
+    const getCart = async (item)=>
     {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{withCredentials:true});
-            // console.log(response.data);
+            console.log(item);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/${item}`,{withCredentials:true});
             setCart(Immutable(response.data));
         }
         catch (error) {
@@ -83,7 +83,8 @@ export const useCart = () => {
                 product_qty: item.product_qty,
             }));
 
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{ cartItems: updatedCart },{withCredentials:true});
+            const update = await axios.post(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{ cartItems: updatedCart },{withCredentials:true});
+            console.log(update.data);
 
 
         } catch(error)

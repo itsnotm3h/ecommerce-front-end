@@ -91,10 +91,10 @@ export default function ProductInfo() {
     }
 
     useEffect(() => {
-            getCart(statusInfo);
-            getStatus();
+        getStatus();
+        getCart(statusInfo);
             // initSession();
-        }, []);
+        }, [statusInfo]);
 
 
     useEffect(() => {
@@ -108,7 +108,6 @@ export default function ProductInfo() {
                     setStock(response.data.product_stock);
                     setDimension(response.data.product_dimension[0]); // Assuming there's only one dimension object
                     setCounter(getCartQty(response.data.product_id));
-
                 }
                 catch (error) {
                     console.error("Error Fetching in frontend: ", error);
@@ -116,23 +115,24 @@ export default function ProductInfo() {
             };
 
             fetchInfo();
+            getStatus();
 
         }
     }, [id,cart]);
 
-    useEffect(() => {
-        if (info && info.product_id) {
-            // handleCart(info, count);
-            const debouncedTimeout = setTimeout(()=>{
-                updateCart(statusInfo);
+    // useEffect(() => {
+    //     if (info && info.product_id) {
+    //         // handleCart(info, count);
+    //         const debouncedTimeout = setTimeout(()=>{
+    //             updateCart(statusInfo);
 
 
 
-            },500);
+    //         },500);
 
-            return()=> clearTimeout(debouncedTimeout);
-        }
-    }, [count]);
+    //         return()=> clearTimeout(debouncedTimeout);
+    //     }
+    // }, [count]);
 
 
     return (

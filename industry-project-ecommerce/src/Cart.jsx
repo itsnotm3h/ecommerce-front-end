@@ -28,7 +28,7 @@ export default function Cart() {
     
     const {statusInfo,getStatus,initSession} = useSession();
 
-    const cart = fetchCart(statusInfo);
+    const cart = fetchCart();
 
     const checkPromo = (e)=>{
         const val = e.target.value;
@@ -81,14 +81,19 @@ export default function Cart() {
         }
     };
 
-
-
     useEffect(() => {
-        getCart(statusInfo);
+        // getCart(statusInfo);
         fullCartTotal(discount);
 
     }, []);
 
+
+    useEffect(() => {
+            getStatus();
+            getCart(statusInfo);
+            fullCartTotal(discount);
+            }, [statusInfo]);
+    
 
     useEffect(() => {
         const debouncedTimeout = setTimeout(async ()=>{
