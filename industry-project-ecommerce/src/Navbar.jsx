@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch, Link } from 'wouter';
+import { Route, Switch, Link, useLocation } from 'wouter';
 import { useSession } from "./userAtom";
 import axios from "axios";
 
@@ -8,7 +8,8 @@ import axios from "axios";
 export default function Navbar(props) {
 
     const [isNavbar, setNavbar] = useState(false);
-    const {statusInfo,getStatus,setStatus} = useSession();
+    const {statusInfo,getStatus,setStatus,setPreviousLocation,prevLocation} = useSession();
+    const [location] = useLocation();
 
 
     const hamburgerToggle = () => {
@@ -42,12 +43,14 @@ export default function Navbar(props) {
     }, [statusInfo])
 
 
+
+
     return (
         <>
             <div className={`container-fluid postion-relative p-0 position-absolute`} >
                 <nav className="navbar navbar-expand-lg">
                     <div className="container ">
-                        <Link className="navbar-brand" href="#">LogoHere</Link >
+                        <Link className="navbar-brand" href="/">LogoHere</Link >
                         <button
                             className="navbar-toggler"
                             type="button"

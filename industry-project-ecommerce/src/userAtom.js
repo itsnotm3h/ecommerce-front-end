@@ -1,12 +1,15 @@
 import { atom, useAtom } from "jotai";
+import { useLocation } from "wouter";
 import axios from "axios";
 
 export const status = atom("");
 export const loading = atom(false);
+export const location = atom("");
 
 export const useSession = () => {
     const [statusInfo, setStatus] = useAtom(status);
     const [isSession, setIsSession] = useAtom(loading);
+    const [prevLocation,setLocation] = useAtom(location);
 
     
     const getStatus = async () => {
@@ -25,10 +28,25 @@ export const useSession = () => {
         }
     };
 
+    const setPreviousLocation = (item)=>{
+
+        // const [item] = useLocation();
+       
+        if(prevLocation != [item])
+        {
+            setLocation(item);
+            console.log(item,prevLocation);
+            console.log(prevLocation);
+
+        }
+
+    }
+
     return {
         statusInfo,
         setStatus,
         getStatus,
-        isSession
+        isSession,
+        setPreviousLocation
     };
 };

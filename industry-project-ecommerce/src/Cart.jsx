@@ -69,8 +69,15 @@ export default function Cart() {
 
     const handleCheckout = async ()=>{
         try{
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/checkout`,{},{withCredentials:true})
-            console.log(response.data);
+            if(statusInfo=="loggedIn")
+            {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/checkout`,{},{withCredentials:true})
+                console.log(response.data);
+            }
+            else{
+                setLocation("/login");
+            }
+
 
         } catch (error)
         {
@@ -98,7 +105,7 @@ export default function Cart() {
     useEffect(() => {
         const debouncedTimeout = setTimeout(async ()=>{
         getCart(statusInfo);
-        },100);
+        },50);
 
         return()=> clearTimeout(debouncedTimeout);
 

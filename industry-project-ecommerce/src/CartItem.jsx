@@ -43,7 +43,6 @@ export default function CartItem (props){
         };
 
         const removeCart = (id)=>{
-            setCounter(0);
             handleCart(0);
         }
 
@@ -84,7 +83,7 @@ export default function CartItem (props){
                 <div className="">Quantity<br />
                     <div className="col-5 d-flex productInfo-button justify-content-between">
                         <div className="productInfo-Minus px-2" onClick={() => { minusCart() }}>-</div>
-                        <div className="productInfo-Quantity">{count}</div>
+                        <div className="productInfo-Quantity">{props.qty}</div>
                         <div className={`productInfo-Add px-2 ${count == stock ? "disabled" : ""}`} onClick={() => { addCart() }}>+</div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "./Navbar";
-import { useRoute } from 'wouter';
+import { useLocation, useRoute } from 'wouter';
 import axios from 'axios';
 import { useCart } from "./CartAtom";
 import { useSession } from "./userAtom";
@@ -13,7 +13,9 @@ export default function ProductInfo() {
     const [info, setInfo] = useState("");
     const [stock, setStock] = useState();
     const [dimension, setDimension] = useState({});
-    const {statusInfo,getStatus} = useSession();
+    const {statusInfo,getStatus,setPreviousLocation} = useSession();
+    const [location] = useLocation();
+
 
     const [match, params] = useRoute('/products/:id');
     const id = `${params.id}`;
@@ -89,6 +91,11 @@ export default function ProductInfo() {
             "product_stock": stock
         })
     }
+
+    useEffect(()=>{
+        setPreviousLocation(location);
+
+    })
 
     useEffect(() => {
         getStatus();

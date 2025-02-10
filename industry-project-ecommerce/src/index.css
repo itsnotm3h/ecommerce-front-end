@@ -330,6 +330,10 @@ body {
     text-decoration: none;
   }
 
+  .fliterLink{
+    text-transform: capitalize;
+    font-size: 1rem;
+  }
   /* .link:hover{
     color:aqua!important;
   } */

@@ -109,9 +109,8 @@ export const useCart = () => {
     const deleteCartItem = (product_id) =>{
         console.log(product_id)
         setCart((currentCart)=>{
-            console.log(currentCart)
             currentCart.filter((item)=>item.product_id !== product_id)
-        })
+        })  
     }
 
 

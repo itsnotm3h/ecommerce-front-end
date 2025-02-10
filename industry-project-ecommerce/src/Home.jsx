@@ -1,12 +1,23 @@
 import React, { useEffect } from "react";
 import Navbar from './Navbar';
 import Footer from "./Footer";
-import { Router } from "wouter";
-
+import { useLocation } from "wouter";
+import { useSession } from "./userAtom";
 
 export default function HomePage (){
 
+    const [location] = useLocation();
     
+
+    const {setPreviousLocation} = useSession();
+
+    
+        useEffect(()=>{
+    
+            setPreviousLocation(location);
+            return()=>{}
+        },[])
+     
 
     return(
         <>

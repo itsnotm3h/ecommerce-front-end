@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react';
-import { Route, Switch } from 'wouter';
+import { Route, Switch, useLocation } from 'wouter';
 import Home from './Home';
 import ProductInfo from './ProductInfo';
 import Products from './Products';
@@ -10,10 +10,11 @@ import { useSession } from "./userAtom";
 import axios from "axios";
 
 
+
 export default function App() {
 
-
-  const {statusInfo,getStatus} = useSession();
+  const location = useLocation();
+  const {statusInfo,getStatus,setPreviousLocation} = useSession();
 
   useEffect(()=>{
     const initSession = async ()=>{
@@ -28,6 +29,7 @@ export default function App() {
 
     initSession();
     getStatus();
+
   },[])
 
 

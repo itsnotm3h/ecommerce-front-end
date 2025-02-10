@@ -2,21 +2,51 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import ProductCard from "./ProductCard";
 import axios from 'axios';
-// import { useSession } from "./userAtom";
+import { useSession } from "./userAtom";
+import { useLocation } from "wouter";
 
 
 
 export default function Products() {
 
+    const [location] = useLocation();
+    const { setPreviousLocation } = useSession();
+    const [selectCollection, unselectCollection] = useState(false);
+    const [selectType, unselectType] = useState(false);
+
+    const [search, setSearch] = useState([]);
+
+
+
+
+
     const [product, setProducts] = useState([]);
     //   const {statusInfo,getStatus,initSession} = useSession;
+
+
+    const selectTab = (item)=>{
+
+        if(item == "collection")unselectCollection(!selectCollection)
+        if(item == "type")unselectType(!selectType)
+    }
+
+    const fliterQuery = (item,key)=>{
+
+
+
+      
+
+
+        console.log(item,key);
+
+    };
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${search}`);
                 setProducts(response.data);
-                
+
             }
             catch (error) {
                 console.error("Error Fetching in frontend: ", error);
@@ -24,6 +54,8 @@ export default function Products() {
         };
 
         fetchProducts();
+        // setPreviousLocation(location);
+
 
     }, []);
 
@@ -49,8 +81,42 @@ export default function Products() {
                                     <div className="accordion" id="accordionPanelsStayOpenExample">
                                         <div className="accordion-item">
                                             <h2 className="accordion-header">
-                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                                <button className={`accordion-button ${!selectCollection ? "" : "collapsed"}`} type="button" 
+                                                onClick={() => {selectTab("collection")}} >
                                                     <div>Collection </div>
+
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-collapseOne" className={`accordion-collapse collapse  ${!selectCollection ? "" : "show"}`}>
+                                                <div className="accordion-body">
+                                                    {[...new Set(product.flatMap(p => p.product_series))].map((series, index) => (
+                                                        <p key={index} className="fliterLink" onClick={()=>{fliterQuery(series,"product_series")
+
+                                                        }}>{series}</p>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="accordion-item">
+                                            <h2 className="accordion-header">
+                                                <button className={`accordion-button ${!selectType ? "" : "collapsed"}`} type="button" onClick={() => {selectTab("type")}}>
+                                                    <div>Type</div>
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-collapseOne" className={`accordion-collapse collapse  ${!selectType ? "" : "show"}`}>
+      <div className="accordion-body">
+      {[...new Set(product.flatMap(p => p.category_name))].map((type, index) => (
+                                                        <p key={index} className="fliterLink">{type}</p>
+                                                    ))}
+      </div>
+    </div>
+                                        </div>
+
+                                        <div className="accordion-item">
+                                            <h2 className="accordion-header">
+                                                <button className="accordion-button collapsed" type="button">
+                                                    <div>Price Range</div>
                                                 </button>
                                             </h2>
                                             {/* <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show">
@@ -61,31 +127,7 @@ export default function Products() {
 
                                         <div className="accordion-item">
                                             <h2 className="accordion-header">
-                                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                                                    <div>Type </div>
-                                                </button>
-                                            </h2>
-                                            {/* <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show">
-      <div className="accordion-body">
-      </div>
-    </div> */}
-                                        </div>
-
-                                        <div className="accordion-item">
-                                            <h2 className="accordion-header">
-                                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                                                    <div>Price Range </div>
-                                                </button>
-                                            </h2>
-                                            {/* <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show">
-      <div className="accordion-body">
-      </div>
-    </div> */}
-                                        </div>
-
-                                        <div className="accordion-item">
-                                            <h2 className="accordion-header">
-                                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse">
                                                     <div>Sort </div>
                                                 </button>
                                             </h2>
@@ -109,16 +151,14 @@ export default function Products() {
                                     {
                                         product.map(product => (
                                             <div key={product.product_id} className="col">
-                                            <ProductCard
-                                            id = {product.product_id} 
-                                            image = {product.product_image}
-                                            price = {product.product_price}
-                                            category = {product.category_name}
-                                            series = {product.product_series}
-                                            name = {product.product_name}
-
-
-                                            />
+                                                <ProductCard
+                                                    id={product.product_id}
+                                                    image={product.product_image}
+                                                    price={product.product_price}
+                                                    category={product.category_name}
+                                                    series={product.product_series}
+                                                    name={product.product_name}
+                                                />
                                             </div>
                                         ))
                                     }
