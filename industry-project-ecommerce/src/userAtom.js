@@ -17,9 +17,9 @@ export const useSession = () => {
 
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/session/`, 
-                { withCredentials: true }
-            );
+                `${import.meta.env.VITE_API_URL}/session/`,{withCredentials:true, headers: {
+                    'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+                  }});
             setStatus(response.data);
         } catch (error) {
             console.error("Error Fetching Session Status:", error);

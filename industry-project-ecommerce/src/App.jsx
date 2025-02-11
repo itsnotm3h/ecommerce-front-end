@@ -18,7 +18,11 @@ export default function App() {
 
   useEffect(()=>{
     const initSession = async ()=>{
-      const response =  await axios.post(`${import.meta.env.VITE_API_URL}/session/init`,{},{withCredentials:true})
+      const response =  await axios.post(`${import.meta.env.VITE_API_URL}/session/init`,{},{
+        withCredentials:true,
+        headers: {
+        'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+      }})
       .then(
         // response=>console.log(response.data)
       )

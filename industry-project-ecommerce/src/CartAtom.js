@@ -25,7 +25,11 @@ export const useCart = () => {
 
         try {
             console.log(item);
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/${item}`,{withCredentials:true});
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart/${item}`,{
+                withCredentials:true,
+                headers: {
+                'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+              }});
             setCart(Immutable(response.data));
         }
         catch (error) {
@@ -83,7 +87,11 @@ export const useCart = () => {
                 product_qty: item.product_qty,
             }));
 
-            const update = await axios.post(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{ cartItems: updatedCart },{withCredentials:true});
+            const update = await axios.post(`${import.meta.env.VITE_API_URL}/api/cart/`+statusInfo,{ cartItems: updatedCart },{
+                withCredentials:true,
+                headers: {
+                'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+              }});
             console.log(update.data);
 
 

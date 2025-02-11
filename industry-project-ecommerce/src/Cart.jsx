@@ -44,7 +44,11 @@ export default function Cart() {
 
 
     const validatePromo = async (item) => {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/promo/${item}`,{withCredentials:true});
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/promo/${item}`,{
+                withCredentials:true,
+                headers: {
+                'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+              }});
             let result = response.data.discount_rate;
 
 
@@ -77,7 +81,6 @@ export default function Cart() {
             else{
                 setLocation("/login");
             }
-
 
         } catch (error)
         {

@@ -110,7 +110,11 @@ export default function ProductInfo() {
 
             const fetchInfo = async () => {
                 try {
-                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${params.id}`);
+                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${params.id}`,{
+                        withCredentials:true,
+                        headers: {
+                        'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+                      }});
                     setInfo(response.data);
                     setStock(response.data.product_stock);
                     setDimension(response.data.product_dimension[0]); // Assuming there's only one dimension object

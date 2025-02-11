@@ -24,7 +24,11 @@ export default function Login() {
 
     const handleSubmit = async (values, formikHelpers) => {
         try{
-            const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, values,{withCredentials:true});
+            const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, values,{
+                withCredentials:true,
+                headers: {
+                'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+              }});
             
             setStatus(response.data.status);
             setLocation("/");

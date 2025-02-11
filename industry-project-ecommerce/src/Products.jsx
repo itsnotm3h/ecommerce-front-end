@@ -44,7 +44,11 @@ export default function Products() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${search}`);
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${search}`,{
+                    withCredentials:true,
+                    headers: {
+                    'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+                  }});
                 setProducts(response.data);
 
             }

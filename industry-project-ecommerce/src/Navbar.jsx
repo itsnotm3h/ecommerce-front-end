@@ -18,7 +18,11 @@ export default function Navbar(props) {
 
     const logOut = async ()=>{
         try{
-            const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/logout`,{},{withCredentials:true});
+            const response =  await axios.post(`${import.meta.env.VITE_API_URL}/api/users/logout`,{},{
+                withCredentials:true,
+                headers: {
+                'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+              }});
             console.log("loggedout:", response.data);
             setStatus("");
         } catch (error) {
