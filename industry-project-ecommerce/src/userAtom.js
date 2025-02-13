@@ -28,25 +28,24 @@ export const useSession = () => {
         }
     };
 
-    const setPreviousLocation = (item)=>{
+    // const setPreviousLocation = (item)=>{
 
-        // const [item] = useLocation();
+    //     const [item] = useLocation();
        
-        if(prevLocation != [item])
-        {
-            setLocation(item);
-            console.log(item,prevLocation);
-            console.log(prevLocation);
+    //     if(prevLocation != [item])
+    //     {
+    //         setLocation(item);
+    //         console.log(item,prevLocation);
+    //         console.log(prevLocation);
 
-        }
+    //     }
 
-    }
+    // }
 
     return {
         statusInfo,
         setStatus,
         getStatus,
-        isSession,
-        setPreviousLocation
+        isSession
     };
 };

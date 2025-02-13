@@ -10,7 +10,6 @@ export default function ProductCard (props){
 
             setLocation("/products/"+item);
       }
-
       
     return(
         <>
@@ -29,7 +28,7 @@ export default function ProductCard (props){
                                                         </div>
                                                     </div>
                                                     <div className="position-absolute  productInfo-like">
-                                                        <div><span class="material-symbols-outlined">
+                                                        <div><span className="material-symbols-outlined">
                                                             heart_plus
                                                         </span></div>
                                                     </div>

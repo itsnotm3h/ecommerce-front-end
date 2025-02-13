@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Navbar from "./Navbar";
-import { useLocation, useRoute } from 'wouter';
+import {useRoute, useLocation} from 'wouter';
 import axios from 'axios';
 import { useCart } from "./CartAtom";
 import { useSession } from "./userAtom";
@@ -13,12 +13,11 @@ export default function ProductInfo() {
     const [info, setInfo] = useState("");
     const [stock, setStock] = useState();
     const [dimension, setDimension] = useState({});
-    const {statusInfo,getStatus,setPreviousLocation} = useSession();
+    const {statusInfo,getStatus} = useSession();
     const [location] = useLocation();
 
 
     const [match, params] = useRoute('/products/:id');
-    const id = `${params.id}`;
 
     const {updateCart,addToCart,getCartQty,getCart,fetchCart } = useCart();
 
@@ -93,7 +92,7 @@ export default function ProductInfo() {
     }
 
     useEffect(()=>{
-        setPreviousLocation(location);
+        // setPreviousLocation(location);
 
     })
 
@@ -105,6 +104,13 @@ export default function ProductInfo() {
 
 
     useEffect(() => {
+
+        const id = params.id;
+
+        // if (!match || !params?.id) {
+        //     return "/"; // Prevent errors when navigating back
+        //   }
+
 
         if (id) {
 
@@ -129,7 +135,7 @@ export default function ProductInfo() {
             getStatus();
 
         }
-    }, [id,cart]);
+    }, [cart]);
 
     // useEffect(() => {
     //     if (info && info.product_id) {

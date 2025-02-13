@@ -8,7 +8,7 @@ import axios from "axios";
 export default function Navbar(props) {
 
     const [isNavbar, setNavbar] = useState(false);
-    const {statusInfo,getStatus,setStatus,setPreviousLocation,prevLocation} = useSession();
+    const {statusInfo,getStatus,setStatus} = useSession();
     const [location] = useLocation();
 
 
@@ -82,7 +82,7 @@ export default function Navbar(props) {
                                         }}>Logout</Link></div >
                                         </li>
                                                                              <li className="nav-item">
-                                        <Link className={`nav-link ` + props.type}><span class="material-symbols-outlined">
+                                        <Link className={`nav-link ` + props.type}><span className="material-symbols-outlined">
                                             account_circle
                                         </span></Link>
                                         </li>
@@ -94,12 +94,12 @@ export default function Navbar(props) {
 
                                 {/* <li className="nav-item">
 
-                                    <Link className={`nav-link ` + props.type} href="/favourite"><span class="material-symbols-outlined">
+                                    <Link className={`nav-link ` + props.type} href="/favourite"><span className="material-symbols-outlined">
                                         favorite
                                     </span></Link>
                                 </li> */}
                                 <li className="nav-item">
-                                    <Link className={`nav-link ` + props.type} href="/cart"><span class="material-symbols-outlined">
+                                    <Link className={`nav-link ` + props.type} href="/cart"><span className="material-symbols-outlined">
                                         shopping_cart
                                     </span></Link >
                                 </li>

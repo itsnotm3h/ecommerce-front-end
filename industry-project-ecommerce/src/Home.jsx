@@ -9,12 +9,12 @@ export default function HomePage (){
     const [location] = useLocation();
     
 
-    const {setPreviousLocation} = useSession();
+    // const {setPreviousLocation} = useSession();
 
     
         useEffect(()=>{
     
-            setPreviousLocation(location);
+            // setPreviousLocation(location);
             return()=>{}
         },[])
      

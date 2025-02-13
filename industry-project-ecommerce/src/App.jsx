@@ -14,7 +14,7 @@ import axios from "axios";
 export default function App() {
 
   const location = useLocation();
-  const {statusInfo,getStatus,setPreviousLocation} = useSession();
+  const {statusInfo,getStatus} = useSession();
 
   useEffect(()=>{
     const initSession = async ()=>{
@@ -36,13 +36,14 @@ export default function App() {
 
   },[])
 
+  // exact path="/products"
 
   return (
     <>
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/products/:id" component={ProductInfo} />
         <Route path="/products" component={Products} />
+        <Route path="/products/:id" component={ProductInfo} />
         <Route path="/cart" component={Cart}/>
         <Route path="/register" component={Register}/>
         <Route path="/login" component={Login}/>
