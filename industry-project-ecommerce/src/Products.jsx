@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import ProductCard from "./ProductCard";
 import axios from 'axios';
 import { useLocation } from "wouter";
-// import Immutable from "seamless-immutable";
+import Immutable from "seamless-immutable";
 
 
 
@@ -13,13 +13,8 @@ export default function Products() {
     // const { setPreviousLocation } = useSession();
     const [selectCollection, unselectCollection] = useState(false);
     const [selectType, unselectType] = useState(false);
-
-    const [search, setSearch] = useState([]);
-    // const [collection, setCollection] = useState([]);
-    // const [type, setType] = useState([]);
-    // const [price, setPrice] = useState([])
-
-
+    const updateSearch = Immutable([]);
+    const [search, setSearch] = useState(updateSearch);
 
     const [product, setProducts] = useState([]);
     const [priceRange, setPriceRange] = useState([]);
@@ -34,29 +29,59 @@ export default function Products() {
 
 
     const filterQuery = (query) => {
-        let { value, checked, name: key } = query;
-    
-        setSearch((prevValue) => {
-            const checkIndex = prevValue.findIndex(item => item.key === key);
-    
-            if (checkIndex !== -1) {
-                return prevValue.map((item, index) => 
-                    index === checkIndex
-                        ? {
-                            ...item,
-                            values: checked 
-                                ? [...item.values, value] 
-                                : item.values.filter((v) => v !== value)
-                          }
-                        : item
-                );
-            } else {
-                return [...prevValue, { key, values: [value] }];
-            }
-        });
 
-        console.log(search)
-    };
+        let {value,checked,name} = query;
+
+        if(name == "price_range")
+        {
+            value = priceRange[value];
+        }
+    
+
+        setSearch((prevValue) => {
+
+            // check if the value and type exist
+
+            const getIndex = prevValue.findIndex((item) => item.hasOwnProperty(name));
+
+
+
+            if(getIndex !== -1)
+            {                 
+
+                if(checked)
+                {
+                    return prevValue.setIn([getIndex,name],prevValue[getIndex][name].concat(value));
+
+                }
+                else {
+
+                const updatedValues = prevValue[getIndex][name].filter((item) => item !== value);
+                if(updatedValues.length > 0)
+                {
+                    return prevValue.setIn([getIndex,name],updatedValues)
+                }
+                else{
+                    return prevValue.filter((_, index) => index !== getIndex);
+                }
+
+                }
+                
+            }
+            else{
+
+                return prevValue.concat({[name]:[value]})
+
+            }
+
+         
+
+
+        
+
+    
+        });
+    }
 
     const calculateRange = (currentItem) => {
 
@@ -70,8 +95,6 @@ export default function Products() {
         }
 
         if (min != null && max != null) {
-
-
 
             let start = 0;
             let end = min;
@@ -88,27 +111,44 @@ export default function Products() {
                 if (end > max) {
 
                     let endVal = max.toFixed(2);
-                    range.push({ "start":startVal, "end":endVal});
+                    range.push({ "min":startVal, "max":endVal});
                     setPriceRange(range)
                     return range;
                 }
 
 
-                range.push({ "start":startVal, "end":endVal});
+                range.push({ "min":startVal, "max":endVal});
 
             }
         }
     }
 
+
+    useEffect(()=>{
+        console.log(search)
+    },[search])
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products/${search}`, {
+
+
+                // need to change the url if there is search if not empty. 
+                const response = search.length === 0 ? 
+                (await axios.get(`${import.meta.env.VITE_API_URL}/api/products/`, {
                     withCredentials: true,
                     headers: {
                         'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
                     }
-                });
+                })):
+                (await axios.post(`${import.meta.env.VITE_API_URL}/api/products/filter`,{search},{
+                    withCredentials: true,
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true'  // Skip ngrok browser warning
+                    }
+                }));
+                
+            
                 setProducts(response.data);
                 calculateRange(response.data);
             }
@@ -121,7 +161,7 @@ export default function Products() {
         // setPreviousLocation(location);
 
 
-    }, []);
+    }, [search]);
 
 
 
@@ -161,7 +201,7 @@ export default function Products() {
 
 
                                                         <div className="form-check fliterLink" key={index}>
-                                                            <input className="form-check-input" type="checkbox" name="collection" value={series}   onClick={(e) => filterQuery(e.target)} />
+                                                            <input className="form-check-input" type="checkbox" name="collection" value={series}  onClick={(e) => filterQuery(e.target)} />
                                                             <label className="form-check-label" >
                                                             {series}
                                                             </label>
@@ -183,7 +223,7 @@ export default function Products() {
                                                         // <p key={index} className="fliterLink">{type}</p>
                                                         
                                                         <div className="form-check fliterLink" key={index}>
-                                                            <input className="form-check-input" type="checkbox" name="category_name" value={type}  />
+                                                            <input className="form-check-input" type="checkbox" name="category_name" value={type}  onClick={(e) => filterQuery(e.target)} />
                                                             <label className="form-check-label" >
                                                             {type}
                                                             </label>
@@ -205,9 +245,9 @@ export default function Products() {
                                                         {priceRange.map((item, index) => (
                                                             // <div key={index} className="fliterLink">${item.start} - ${item.end}</div>
                                                             <div className="form-check fliterLink" key={index}>
-                                                            <input className="form-check-input" type="checkbox" name="price_range" value={`${item.start,item.end}`}  />
+                                                            <input className="form-check-input" type="checkbox" name="price_range" value={index} onClick={(e) => filterQuery(e.target)} />
                                                             <label className="form-check-label" >
-                                                            ${item.start} - ${item.end}
+                                                            ${item.min} - ${item.max}
                                                             </label>
                                                         </div>
                                                         ))}
@@ -227,7 +267,7 @@ export default function Products() {
                                                 <div className="form-check fliterLink">
                                                             <input className="form-check-input " type="checkbox" name="price_range" value=""  />
                                                             <label className="form-check-label" >
-1                                                            </label>
+                                                           </label>
                                                         </div>
 
                                                 </div>
